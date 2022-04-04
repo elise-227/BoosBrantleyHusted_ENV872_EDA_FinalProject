@@ -1,0 +1,22 @@
+---
+title: "NC Discharge Analysis (New River)"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# loading packages
+library(ggplot2)
+library(tidyverse)
+library(lubridate)
+
+# loading in data
+NewRiver.Discharge.RAW <- read.csv("../BoosBrantleyHusted_ENV872_EDA_FinalProject/Data/Raw/NC_Discharge_NewRiver_RAW.csv", 
+                                   stringsAsFactors = TRUE)
+head(NewRiver.Discharge.RAW)
+
+```
+
