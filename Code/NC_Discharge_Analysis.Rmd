@@ -4,10 +4,12 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(include = FALSE)
 ```
 
-```{r}
+Beginning by setting up the R session.
+
+```{r include=FALSE}
 # getting directory
 getwd()
 
@@ -16,7 +18,12 @@ library(ggplot2)
 library(tidyverse)
 library(lubridate)
 library(dplyr)
+library(zoo)
+```
 
+Next I load in the raw data and work to tidy the dataset including selecting columns, filtering for data post-1990, changing column names, filtering for hurricane season months, and parsing out the 'Date' column into its three components. This serves as the processed dataset. I then also created another dataframe for daily means of both 'Discharge_cfs' and 'GageHeight_ft'. Note: there are NA's for 'MeanGageHeight_ft' until 10/02/2007 as this is when this location was outfitted with this sensor.
+
+```{r}
 # loading in data
 NewRiver.Discharge.RAW <- read.csv("../Data/Raw/NC_Discharge_NewRiver_RAW.csv")
 
@@ -42,12 +49,40 @@ NewRiver.Discharge.PROC <- NewRiver.Discharge.PROC %>%
                         mutate(Year = year(Date), # creating year column
                                Month = month(Date), # creating month column
                                Day = day(Date)) %>% # creating day column
-                        filter(Year >= 1990) # filtering for data 1990 or later
+                        filter(Year >= 1990) %>% # filtering for data 1990 or later
+                        filter(Month > 5 & Month < 11) # filtering for data in hurricane season
+
+# saving processd file as csv
+write.csv(NewRiver.Discharge.PROC, "../Data/Processed/NC_Discharge_NewRiver_PROC.csv", row.names = FALSE)
                         
 # creating daily discharge dataset
 NewRiver.Daily.DischargeGage <- NewRiver.Discharge.PROC %>%  
                         summarise(MeanDailyDischarge_cfs = mean(Discharge_cfs), # daily mean discharge
                                   MeanDailyGageHeight_ft = mean(GageHeight_ft)) # daily mean gage height
+```
+
+Below is the time series analysis for the daily discharge 
+
+```{r}
+# initial data visualiation
+DailyDischarge.Plot <- ggplot(NewRiver.Daily.DischargeGage, aes(Date, MeanDailyDischarge_cfs)) +
+                      geom_line() +
+                      geom_smooth(method = "lm") +
+                      labs(x = "Date", y = "Mean Daily Discharge (cfs)")
+DailyDischarge.Plot
+
+# filling missing data with linear interpolation
+NewRiver.Daily.Discharge.Clean <-
+  NewRiver.Daily.DischargeGage %>%
+  mutate(Discharge_cfs_Clean = zoo::na.approx(MeanDailyDischarge_cfs))
+
+# creating daily discharge time series
+NewRiver.Daily.Discharge.ts <- ts(NewRiver.Daily.Discharge.Clean$Discharge_cfs_Clean,
+                     start = c(1990, 01, 01), frequency = 365)
+
+# decomposing daily time series
+Daily.Discharge.decomp <- stl(NewRiver.Daily.Discharge.ts, s.window = "periodic")
+plot(Daily.Discharge.decomp)
 
 ```
 
