@@ -65,4 +65,3 @@ plot(nonseasonal_data_florida_ts)
 florida_trend <- MannKendall(nonseasonal_data_florida_ts)
 florida_trend
 summary(florida_trend)
-\
