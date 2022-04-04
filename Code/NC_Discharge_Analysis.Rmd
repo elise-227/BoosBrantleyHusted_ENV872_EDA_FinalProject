@@ -19,6 +19,7 @@ library(tidyverse)
 library(lubridate)
 library(dplyr)
 library(zoo)
+library(Kendall)
 ```
 
 Next I load in the raw data and work to tidy the dataset including selecting columns, filtering for data post-1990, changing column names, filtering for hurricane season months, and parsing out the 'Date' column into its three components. This serves as the processed dataset. I then also created another dataframe for daily means of both 'Discharge_cfs' and 'GageHeight_ft'. Note: there are NA's for 'MeanGageHeight_ft' until 10/02/2007 as this is when this location was outfitted with this sensor.
@@ -78,11 +79,28 @@ NewRiver.Daily.Discharge.Clean <-
 
 # creating daily discharge time series
 NewRiver.Daily.Discharge.ts <- ts(NewRiver.Daily.Discharge.Clean$Discharge_cfs_Clean,
-                     start = c(1990, 01, 01), frequency = 365)
+                     start = c(1990, 06, 01), frequency = 153)
 
 # decomposing daily time series
 Daily.Discharge.decomp <- stl(NewRiver.Daily.Discharge.ts, s.window = "periodic")
 plot(Daily.Discharge.decomp)
+```
 
+```{r}
+# adding components into a dataframe, removing seasonal component
+Daily.Discharge.Components <- as.data.frame(Daily.Discharge.decomp$time.series[,2:3])
+
+# adding trend and remainder for analysis
+NonSeasonalDischarge.Daily <- mutate(Daily.Discharge.Components,
+                                   Seasonality_Removed = Daily.Discharge.Components$trend +
+                                     Daily.Discharge.Components$remainder)
+
+# creating non-seasonal time series
+NonSeasonal.DailyDischarge.ts <- ts(NonSeasonalDischarge.Daily$Seasonality_Removed,
+                     start = c(1990, 06, 01), frequency = 153)
+plot(NonSeasonal.DailyDischarge.ts)
+
+ # running Mann Kendall on time series with seasonality removed
+MannKendall(NonSeasonal.DailyDischarge.ts)
 ```
 
