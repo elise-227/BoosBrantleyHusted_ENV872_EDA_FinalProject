@@ -66,6 +66,6 @@ florida_trend
 summary(florida_trend)
 
 #plot discharge on the log scale
-ggplot(florida_1990_edit, aes(x = Date, y = log(Daily_Discharge)))+
+ggplot(florida_1990_edit, aes(x = Date, y = log(Daily_Discharge_clean)))+
   geom_point(color = "hot pink")+
   geom_smooth(method = lm, color = "black")
