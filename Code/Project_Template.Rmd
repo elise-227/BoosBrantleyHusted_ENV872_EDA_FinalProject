@@ -34,13 +34,15 @@ mainfont: Times New Roman
 
 
 # Rationale and Research Questions
-
-
+## Research Questions
+How are the frequency and intensity of hurricanes changing over time in the US? 
+Are the general locations of hurricanes shifting towards the poles in the northern & southern hemisphere?
 
 \newpage
 
 # Dataset Information
 
+In order to address the research questions mentioned above, historical USGS data will be used to assess the change in hurricane frequency and intensity over time in the US. Daily discharge data will be obtained from three states that have varying latitudes on the East Coast (i.e., Florida, North Carolina, and New York). The comparative study will reveal if hurricanes are shifting poleward.
 
 
 \newpage
