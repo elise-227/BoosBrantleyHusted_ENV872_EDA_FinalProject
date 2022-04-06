@@ -35,12 +35,16 @@ mainfont: Times New Roman
 
 # Rationale and Research Questions
 
+Hurricanes are a serious natural disaster that often affects millions each year up and down the East Coast of the United States. Understanding how climate change is impacting the trends of hurricanes will be important information for strategic planning to protect both property and lives into the future. For this analysis we chose to look at discharge data of major rivers in states spanning the East Coast of the US in order to gain ome information on how locality and intensity of these hurricanes may be changing over the past three decades. 
+
+We chose to investigate discharge data in Florida, North Carolina, and New York to gain an understanding of how hurricane regimes may be changing across the entire span of the coast. Our central research questions revolved around investigating any increasing trends in discharge during the hurricane season (June-October) and where these increasing trends were more intense. 
 
 
 \newpage
 
 # Dataset Information
 
+All datasets used in this analysis were downloaded from the USGS website, specifically from their historical records of discharge data recorded by field dataloggers. One dataset was chosen from each of the three states of interest. Stream gage locations were chosen based on both being on the coast of these states as well as being in one of the major rivers draining the state's runoff into the Atlantic Ocean. Gage locations were also chosen that had data going back to at least 1990 so the time series analysis would be equal/comparable among all three sites. Discharge data was the data type used in this analysis with all datasets having at minimum daily recordings but some having recordings as often as every 30 minutes. 
 
 
 \newpage
@@ -54,12 +58,9 @@ mainfont: Times New Roman
 # Analysis
 
 
+## Question 1: Has there been an overall increase in mean daily discharge during the Atlantic hurricane season from 1990 - 2021?
 
-## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
-
-## Question 2: 
-
-
+## Question 2: Has one portion of the East Coast of the US eperienced a disproportionate increase in hurricane activity, and its associated discharge, compared to other portions commonly affected by these hurricanes?
 
 
 \newpage
