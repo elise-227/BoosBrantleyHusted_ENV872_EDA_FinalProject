@@ -72,7 +72,10 @@ summary(florida_trend)
 #plot discharge on the log scale
 ggplot(florida_1990_edit, aes(x = Date, y = log(Daily_Discharge_clean)))+
   geom_point(color = "hot pink")+
-  geom_smooth(method = lm, color = "black")
+  geom_smooth(method = lm, color = "black")+
+  labs(title = "Discharge in Florida during Hurricane Months over Time")+
+  xlab("Date") +
+  ylab("Mean Daily Discharge (ft^3/s)")
 
 #map of gage sites 
 site_locations <- read.csv("./Data/Raw/Site_locations.csv", stringsAsFactors = T)
