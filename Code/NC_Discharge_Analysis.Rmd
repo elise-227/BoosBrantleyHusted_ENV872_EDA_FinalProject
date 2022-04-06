@@ -1,6 +1,8 @@
 ---
 title: "NC Discharge Analysis (New River)"
 output: pdf_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -20,6 +22,7 @@ library(lubridate)
 library(dplyr)
 library(zoo)
 library(Kendall)
+library(ggfortify)
 ```
 
 Next I load in the raw data and work to tidy the dataset including selecting columns, filtering for data post-1990, changing column names, filtering for hurricane season months, and parsing out the 'Date' column into its three components. This serves as the processed dataset. I then also created another dataframe for daily means of both 'Discharge_cfs' and 'GageHeight_ft'. Note: there are NA's for 'MeanGageHeight_ft' until 10/02/2007 as this is when this location was outfitted with this sensor.
@@ -69,7 +72,8 @@ Below is the time series analysis for the daily discharge
 DailyDischarge.Plot <- ggplot(NewRiver.Daily.DischargeGage, aes(Date, MeanDailyDischarge_cfs)) +
                       geom_line() +
                       geom_smooth(method = "lm") +
-                      labs(x = "Date", y = "Mean Daily Discharge (cfs)")
+                      labs(x = "Date", y = "Mean Daily Discharge (cfs)") +
+                      scale_y_log10()
 DailyDischarge.Plot
 
 # filling missing data with linear interpolation
@@ -86,6 +90,8 @@ Daily.Discharge.decomp <- stl(NewRiver.Daily.Discharge.ts, s.window = "periodic"
 plot(Daily.Discharge.decomp)
 ```
 
+Below is the analysis of the data with seasonality removed and the Mann Kendall test to determine trend change over time. 
+
 ```{r}
 # adding components into a dataframe, removing seasonal component
 Daily.Discharge.Components <- as.data.frame(Daily.Discharge.decomp$time.series[,2:3])
@@ -98,9 +104,14 @@ NonSeasonalDischarge.Daily <- mutate(Daily.Discharge.Components,
 # creating non-seasonal time series
 NonSeasonal.DailyDischarge.ts <- ts(NonSeasonalDischarge.Daily$Seasonality_Removed,
                      start = c(1990, 06, 01), frequency = 153)
-plot(NonSeasonal.DailyDischarge.ts)
+NonSeasonal.Plot <- autoplot(NonSeasonal.DailyDischarge.ts) +
+                      scale_y_log10() +
+                      labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
+                           title = "Non-Seasonal Daily Discharge for New River, 
+                           NC Hurricane Season (1990-2021)")
+NonSeasonal.Plot
 
- # running Mann Kendall on time series with seasonality removed
+# running Mann Kendall on time series with seasonality removed
 MannKendall(NonSeasonal.DailyDischarge.ts)
 ```
 
