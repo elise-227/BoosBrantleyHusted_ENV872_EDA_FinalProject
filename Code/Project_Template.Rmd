@@ -35,6 +35,10 @@ mainfont: Times New Roman
 
 # Rationale and Research Questions
 
+Hurricanes are a serious natural disaster that often affects millions each year up and down the East Coast of the United States. Understanding how climate change is impacting the trends of hurricanes will be important information for strategic planning to protect both property and lives into the future. For this analysis we chose to look at discharge data of major rivers in states spanning the East Coast of the US in order to gain ome information on how locality and intensity of these hurricanes may be changing over the past three decades. 
+
+We chose to investigate discharge data in Florida, North Carolina, and New York to gain an understanding of how hurricane regimes may be changing across the entire span of the coast. Furthermore, the comparative study will reveal if hurricanes are shifting poleward. Our central research questions revolved around investigating any increasing trends in discharge during the hurricane season (June-October) and where these increasing trends were more intense. 
+
 ## Research Questions
 
 ## Question 1: Has there been an overall increase in mean daily discharge during the Atlantic hurricane season from 1990 - 2021?
@@ -43,17 +47,9 @@ mainfont: Times New Roman
 
 Are the general locations of hurricanes shifting towards the poles in the northern &/or southern hemisphere?
 
-
-Hurricanes are a serious natural disaster that often affects millions each year up and down the East Coast of the United States. Understanding how climate change is impacting the trends of hurricanes will be important information for strategic planning to protect both property and lives into the future. For this analysis we chose to look at discharge data of major rivers in states spanning the East Coast of the US in order to gain ome information on how locality and intensity of these hurricanes may be changing over the past three decades. 
-
-We chose to investigate discharge data in Florida, North Carolina, and New York to gain an understanding of how hurricane regimes may be changing across the entire span of the coast. Furthermore, the comparative study will reveal if hurricanes are shifting poleward. Our central research questions revolved around investigating any increasing trends in discharge during the hurricane season (June-October) and where these increasing trends were more intense. 
-
-
-
 \newpage
 
 # Dataset Information
-
 
 All datasets used in this analysis were downloaded from the USGS website, specifically from their historical records of discharge data recorded by field dataloggers. The data was obtained from three states varying in latitude along the East Coast (i.e., Florida, North Carolina, and New York). Stream gage locations were selected based on proximity to major river basins and vulnerable counties susceptible to hurricane impacts. Additionally, Gage locations were chosen with sufficient data, going back to at least the 1990s. Similar timeline ranges for the datatsets ensures a time series analysis that is comparable among all three sites. Discharge data was the data type used in this analysis with all datasets having at minimum daily recordings but some having recordings as often as every 30 minutes. 
 
