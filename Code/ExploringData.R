@@ -41,10 +41,15 @@ fh_clean <-left_join(date_join, florida_hurricane, by = "Date")
 fh_clean <- fh_clean %>%
   select(1,2) %>%
   mutate(Daily_Discharge_clean = zoo::na.approx(Daily_Discharge))
+#save to processed folder 
+write.csv(fh_clean, "./Data/Processed/flordia_1987_processed.csv")
+
 #trimming data set for comparison, starting at 1990
 florida_1990_edit <- fh_clean %>%
   mutate(year = year(Date)) %>%
   filter(year >= 1990) 
+#save to processed folder 
+write.csv(florida_1990_edit, "./Data/Processed/flordia_1990_processed.csv")
 
 #regular time series
 florida_hurricane_ts <- ts(florida_1990_edit$Daily_Discharge_clean, start=c(1990,6), frequency = 153)  
