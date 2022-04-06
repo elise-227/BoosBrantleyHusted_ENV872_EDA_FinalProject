@@ -6,6 +6,10 @@ library(trend)
 library(zoo)
 library(Kendall)
 library(tseries)
+require(sf)
+require(leaflet)
+require(mapview)
+mapviewOptions(fgb = FALSE)
 
 #read in both sheets of the data since data was too big to fit on one
 florida_part2 <- read.csv("./Data/Raw/florida_round2.csv", stringsAsFactors = T)
@@ -69,3 +73,10 @@ summary(florida_trend)
 ggplot(florida_1990_edit, aes(x = Date, y = log(Daily_Discharge_clean)))+
   geom_point(color = "hot pink")+
   geom_smooth(method = lm, color = "black")
+
+#map of gage sites 
+site_locations <- read.csv("./Data/Raw/Site_locations.csv", stringsAsFactors = T)
+site_locations.sf <- site_locations %>%
+st_as_sf(coords = c('Long','Lat'),
+         crs=4269)
+mapview(site_locations.sf, zcol = "Site.Name")
