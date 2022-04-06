@@ -31,6 +31,10 @@ NY_Discharge.processed <-
          Date >= "1990-06-01")
 view(NY_Discharge.processed)
 
+#log mean discharge
+NY_Discharge.processed$LogDischarge = log(NY_Discharge.processed$MeanDischarge)
+
+
 #rename and remove columns
 NY_AnnualPeakDischarge.processed <-
   NY_AnnualPeakDischarge %>%
@@ -44,10 +48,16 @@ view(NY_AnnualPeakDischarge.processed)
 
 
 #Daily Discharge Plot
-ggplot(NY_Discharge.processed, aes(x = Date, y = MeanDischarge)) +
+ggplot(NY_Discharge.processed, aes(x = Date, y = LogDischarge)) +
+  geom_smooth(method = lm) +
+  ylab("log_Daily Discharge (csf)") +
+  labs(title = paste("Daily Discharge Trends During Hurricane Seasons"), subtitle = paste("New York")) +
+  scale_x_date(date_labels = "%Y", date_breaks = "2 year") +
+  theme(axis.text.x = element_text(angle = 90)) +
   geom_line()
 
-#NY Daily Discharge time-series
+
+\#NY Daily Discharge time-series
 NY_DailyDischarge.ts <- ts(NY_Discharge.processed$MeanDischarge, start = c(1990,01), frequency = 153)
 head(NY_DailyDischarge.ts, 10)
 #Decompose
