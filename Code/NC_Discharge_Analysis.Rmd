@@ -29,7 +29,7 @@ Next I load in the raw data and work to tidy the dataset including selecting col
 
 ```{r}
 # loading in data
-NewRiver.Discharge.RAW <- read.csv("../Data/Raw/NC_Discharge_NewRiver_RAW.csv")
+NewRiver.Discharge.RAW <- read.csv("./Data/Raw/NC_Discharge_NewRiver_RAW.csv")
 
 # setting date column as date
 NewRiver.Discharge.RAW$Date <- as.Date(NewRiver.Discharge.RAW$datetime, format = '%m/%d/%y')
@@ -57,22 +57,27 @@ NewRiver.Discharge.PROC <- NewRiver.Discharge.PROC %>%
                         filter(Month > 5 & Month < 11) # filtering for data in hurricane season
 
 # saving processd file as csv
-write.csv(NewRiver.Discharge.PROC, "../Data/Processed/NC_Discharge_NewRiver_PROC.csv", row.names = FALSE)
+write.csv(NewRiver.Discharge.PROC, "./Data/Processed/NC_Discharge_NewRiver_PROC.csv", row.names = FALSE)
                         
 # creating daily discharge dataset
 NewRiver.Daily.DischargeGage <- NewRiver.Discharge.PROC %>%  
-                        summarise(MeanDailyDischarge_cfs = mean(Discharge_cfs), # daily mean discharge
-                                  MeanDailyGageHeight_ft = mean(GageHeight_ft)) # daily mean gage height
+            summarise(MeanDailyDischarge_cfs = mean(Discharge_cfs), # daily mean discharge
+                      MeanDailyGageHeight_ft = mean(GageHeight_ft)) # daily mean gage height
 ```
 
 Below is the time series analysis for the daily discharge 
 
 ```{r}
 # initial data visualiation
-DailyDischarge.Plot <- ggplot(NewRiver.Daily.DischargeGage, aes(Date, MeanDailyDischarge_cfs)) +
-                      geom_line() +
-                      geom_smooth(method = "lm") +
-                      labs(x = "Date", y = "Mean Daily Discharge (cfs)") +
+DailyDischarge.Plot <- 
+                ggplot(NewRiver.Daily.DischargeGage, aes(Date, MeanDailyDischarge_cfs)) +
+                      geom_point(color = "darkgreen") +
+                      geom_smooth(method = "lm", color = "black") +
+                      labs(x = "Date", y = "Mean Daily Discharge (cfs)",
+                        title = "Mean Daily Discharge During Hurrcane Seasons (1990-2021)", 
+                           subtitle = "New River, North Carolina") +
+                      theme(plot.title=element_text(hjust=0.5)) +
+                      theme(plot.subtitle=element_text(hjust=0.5)) +
                       scale_y_log10()
 DailyDischarge.Plot
 
@@ -106,9 +111,12 @@ NonSeasonal.DailyDischarge.ts <- ts(NonSeasonalDischarge.Daily$Seasonality_Remov
                      start = c(1990, 06, 01), frequency = 153)
 NonSeasonal.Plot <- autoplot(NonSeasonal.DailyDischarge.ts) +
                       scale_y_log10() +
+                      geom_smooth(method = "lm") +
                       labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
-                           title = "Non-Seasonal Daily Discharge for New River, 
-                           NC Hurricane Season (1990-2021)")
+          title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons (1990-2021)", 
+          subtitle = "New River, North Carolina") +
+                      theme(plot.title=element_text(hjust=0.5)) +
+                      theme(plot.subtitle=element_text(hjust=0.5))
 NonSeasonal.Plot
 
 # running Mann Kendall on time series with seasonality removed
