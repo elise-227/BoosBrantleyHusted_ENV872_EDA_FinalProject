@@ -8,6 +8,7 @@ library(zoo)
 library(trend)
 library(dygraphs)
 library(xts)
+library(ggfortify)
 
 #Load in Data
 NY_Discharge <- read.csv("Data/Raw/NY_MeanDailyDischarge.csv")
@@ -35,30 +36,19 @@ view(NY_Discharge.processed)
 NY_Discharge.processed$LogDischarge = log(NY_Discharge.processed$MeanDischarge)
 
 
-#rename and remove columns
-NY_AnnualPeakDischarge.processed <-
-  NY_AnnualPeakDischarge %>%
-  rename(Agency = agenc,
-         SiteNumber = y_cd.......site_,
-         AnnualPeakDischarge = peak_va) %>%
-  select(Agency, SiteNumber, AnnualPeakDischarge, Month, Date) %>%
-  drop_na() %>%
-  filter(Month > 5, Month < 11)
-view(NY_AnnualPeakDischarge.processed)
-
-
-#Daily Discharge Plot
+#Daily Discharge Plot logged
 ggplot(NY_Discharge.processed, aes(x = Date, y = LogDischarge)) +
-  geom_smooth(method = lm) +
-  ylab("log_Daily Discharge (csf)") +
-  labs(title = paste("Daily Discharge Trends During Hurricane Seasons"), subtitle = paste("New York")) +
+  geom_point(color = "blue", size = 0.7) +
+  geom_smooth(method = lm, color = "black") +
+  ylab("Daily Discharge (cfs)") +
+  labs(title = paste("Daily Discharge During Hurricane Seasons (1990-2021)"), subtitle = paste("Cold Spring Harbor, New York")) +
   scale_x_date(date_labels = "%Y", date_breaks = "2 year") +
-  theme(axis.text.x = element_text(angle = 90)) +
-  geom_line()
+  theme(axis.text.x = element_text(angle = 90)) 
+  
 
 
-\#NY Daily Discharge time-series
-NY_DailyDischarge.ts <- ts(NY_Discharge.processed$MeanDischarge, start = c(1990,01), frequency = 153)
+#NY Daily Discharge time-series
+NY_DailyDischarge.ts <- ts(NY_Discharge.processed$LogDischarge, start = c(1990,01), frequency = 153)
 head(NY_DailyDischarge.ts, 10)
 #Decompose
 NY_DailyDischarge.decompose <- stl(NY_DailyDischarge.ts, s.window = "periodic")
@@ -101,4 +91,15 @@ NY_Trend.Nonseasonal
 #the null hypothesis of the test (i.e., Seasonal Mann Kendall) states that the data is stationary
 #reject null hypothesis and we state that there is a trend
 
+
+NY_NonSeasonal.Plot <- autoplot(NY_Nonseasonal.ts) +
+  scale_y_log10() +
+  labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
+       title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons (1990-2021)", 
+       subtitle = "Cold Spring Harbor, New York") 
+  #geom_smooth(method = "lm")
+print(NY_NonSeasonal.Plot)
+ 
+# running Mann Kendall on time series with seasonality removed
+MannKendall(NonSeasonal.DailyDischarge.ts)
 
