@@ -18,6 +18,15 @@ NY_AnnualPeakDischarge <- read.csv("Data/Raw/NYAnnualPeakFlowDischarge.csv", str
 NY_Discharge$Date <- as.Date(NY_Discharge$Date, format = "%m/%d/%Y")
 NY_AnnualPeakDischarge$Date <- as.Date(NY_AnnualPeakDischarge$Date, format = "%m/%d/%Y")
 
+#Set Theme
+my_theme <- theme_classic(base_size = 14) +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "bottom", legend.text=element_text(size=8), 
+        legend.title=element_text(size=10), panel.background = element_rect(fill = "gray95"), 
+        panel.grid.major = element_line(size = 0.6, linetype = 'solid', colour = "white"))
+
+theme_set(my_theme)
+
 #Wrangle Data
 NY_Discharge.processed <-
   NY_Discharge %>%
@@ -37,8 +46,9 @@ write.csv(NY_Discharge.processed, "./Data/Processed/NY_DischargeData_Processed",
 
 
 #Initial Visualization of Data: Daily Discharge Plot (logged)
-ggplot(NY_Discharge.processed, aes(x = Date, y = LogDischarge)) +
-  geom_point(color = "blue", size = 0.7) +
+ggplot(NY_Discharge.processed, aes(x = Date, y = MeanDischarge)) +
+  scale_y_log10() +
+  geom_point(color = "turquoise4", size = 0.7) +
   geom_smooth(method = lm, color = "black") +
   ylab("Daily Discharge (cfs)") +
   labs(title = paste("Daily Discharge During Hurricane Seasons (1990-2021)"), subtitle = paste("Cold Spring Harbor, New York")) +

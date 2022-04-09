@@ -36,6 +36,13 @@ library(ggfortify)
 
 # Set your ggplot theme
 
+my_theme <- theme_classic(base_size = 14) +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "bottom", legend.text=element_text(size=8), 
+        legend.title=element_text(size=10), panel.background = element_rect(fill = "gray95"), 
+        panel.grid.major = element_line(size = 0.6, linetype = 'solid', colour = "white"))
+
+theme_set(my_theme)
 
 # Load your datasets
 #New York Data
