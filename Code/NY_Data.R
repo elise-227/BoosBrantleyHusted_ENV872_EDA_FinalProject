@@ -11,15 +11,14 @@ library(xts)
 library(ggfortify)
 
 #Load in Data
-NY_Discharge <- read.csv("Data/Raw/NY_MeanDailyDischarge.csv")
-NY_AnnualPeakDischarge <- read.csv("Data/Raw/NYAnnualPeakFlowDischarge.csv")
+NY_Discharge <- read.csv("Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactors = T)
+NY_AnnualPeakDischarge <- read.csv("Data/Raw/NYAnnualPeakFlowDischarge.csv", stringsAsFactors = T)
 
 #Format Date
 NY_Discharge$Date <- as.Date(NY_Discharge$Date, format = "%m/%d/%Y")
 NY_AnnualPeakDischarge$Date <- as.Date(NY_AnnualPeakDischarge$Date, format = "%m/%d/%Y")
 
-#CWrangle Data
-##rename and remove columns
+#Wrangle Data
 NY_Discharge.processed <-
   NY_Discharge %>%
   rename(Agency = agency_,
@@ -120,9 +119,9 @@ print(NY_NonSeasonal.Plot1)
 #ggplot version (working)
 NY_NonSeasonal.Plot2 <- ggplot(NY_Combine_Nonseasonal, aes(x = Date, y = Nonseasonal)) +
   scale_y_log10() +
-  geom_point(color = "blue", size = 0.6) +
+  geom_point(color = "turquoise4", size = 0.6) +
   labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
-       title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons (1990-2021)", 
+       title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons", 
        subtitle = "Cold Spring Harbor, New York") +
   geom_smooth(method = "lm", color = "black") +
   scale_x_date(date_labels = "%Y", date_breaks = "2 year") +
