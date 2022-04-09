@@ -54,7 +54,6 @@ Are the general locations of hurricanes shifting towards the poles in the northe
 All datasets used in this analysis were downloaded from the USGS website, specifically from their historical records of discharge data recorded by field dataloggers. The data was obtained from three states varying in latitude along the East Coast (i.e., Florida, North Carolina, and New York). Stream gage locations were selected based on proximity to major river basins and vulnerable counties susceptible to hurricane impacts. Additionally, Gage locations were chosen with sufficient data, going back to at least the 1990s. Similar timeline ranges for the datatsets ensures a time series analysis that is comparable among all three sites. Discharge data was the data type used in this analysis with all datasets having at minimum daily recordings but some having recordings as often as every 30 minutes. 
 
 
-
 \newpage
 
 # Exploratory Analysis 
