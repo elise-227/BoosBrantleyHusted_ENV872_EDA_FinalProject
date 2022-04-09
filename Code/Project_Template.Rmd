@@ -47,6 +47,9 @@ theme_set(my_theme)
 # Load your datasets
 #New York Data
 NY_Discharge <- read.csv("Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactors = TRUE)
+
+#North Carolina Data
+NC_Discharge <- read.csv("Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
 ```
 
 
