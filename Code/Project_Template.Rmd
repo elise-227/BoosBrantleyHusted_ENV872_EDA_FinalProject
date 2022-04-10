@@ -40,6 +40,7 @@ library(tseries)
 require(sf)
 require(leaflet)
 require(mapview)
+library(plyr)
 mapviewOptions(fgb = FALSE)
 
 # Set your ggplot theme
@@ -300,15 +301,31 @@ plot(FL_NonSeasonal.Plot)
 ```
 
 ```{r combined plot}
-combined_NonSeasonal.Plot <- ggplot() +
+# creating combined nonseasonal dataframe
+Date.df <- as.data.frame(NY_Combine_Nonseasonal$Date)
+NY.NonSeasonal.df <- as.data.frame(NY_Combine_Nonseasonal$Nonseasonal)
+FL.NonSeasonal.df <- as.data.frame(florida_hurricane_Decomposed_Components$data)
+NC.NonSeasonal.df <- as.data.frame(NonSeasonalDischarge.Daily$Seasonality_Removed)
+
+Combined.Nonseasonal.DF <- merge(Date.df, NY.NonSeasonal.df, FL.NonSeasonal.df, NC.NonSeasonal.df)
+
+
+combined_NonSeasonal.Plot <- ggplot(NULL) +
   scale_y_log10() +
-  geom_point(data=florida_hurricane_Decomposed_Components, 
-             aes(x = Date, y = data), alpha = 0) +
-  geom_smooth(method = "lm", color = "deeppink1") +
-  geom_point(NY_Combine_Nonseasonal, aes(x = Date, y = Nonseasonal), alpha = 0) + 
-  geom_smooth(method = "lm", color = "turqouise4") +
+  geom_point(data = NonSeasonalDischarge.Daily, aes(Date, Seasonality_Removed), 
+             color = "forestgreen", alpha = 0.05) +
+  geom_smooth(data = NonSeasonalDischarge.Daily, aes(Date, Seasonality_Removed),
+              method = "lm", color = "forestgreen") +
+  geom_point(data = florida_hurricane_Decomposed_Components, 
+             aes(x = Date, y = data), color = "deeppink1", alpha = 0.05) +
+  geom_smooth(data = florida_hurricane_Decomposed_Components, 
+             aes(x = Date, y = data), method = "lm", color = "deeppink1") +
+  geom_point(data = NY_Combine_Nonseasonal, aes(x = Date, y = Nonseasonal), 
+             color = "turquoise4", alpha = 0.05) + 
+  geom_smooth(data = NY_Combine_Nonseasonal, aes(x = Date, y = Nonseasonal), 
+              method = "lm", color = "turquoise4") +
   labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
-       title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons")
+       title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons") +
   scale_x_date(date_labels = "%Y", date_breaks = "2 year") +
   theme(axis.text.x = element_text(angle = 90)) 
 plot(combined_NonSeasonal.Plot)
