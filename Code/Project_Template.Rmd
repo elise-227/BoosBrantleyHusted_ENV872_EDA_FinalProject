@@ -10,7 +10,8 @@ subtitle: "Web address for GitHub repository"
 author: "Elise Boos, Andrew Brantley, Kelsey Husted"
 fontsize: 12pt
 mainfont: Times New Roman
-
+editor_options: 
+  chunk_output_type: console
 ---
 
 \newpage
@@ -46,10 +47,10 @@ theme_set(my_theme)
 
 # Load your datasets
 #New York Data
-NY_Discharge <- read.csv("Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactors = TRUE)
+NY_Discharge <- read.csv("../Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactors = TRUE)
 
 #North Carolina Data
-NC_Discharge <- read.csv("Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
+NC_Discharge <- read.csv("../Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
 ```
 
 
@@ -84,6 +85,20 @@ All datasets used in this analysis were downloaded from the USGS website, specif
 
 # Analysis
 
+```{r}
+NonSeasonal.Plot <- ggplot() +
+  geom_point(aes(NY_Combine_Nonseasonal$Date, NY_Combine_Nonseasonal$Nonseasonal), 
+             alpha = 1) + 
+  geom_smooth(method = "lm", color = "turquoise4") +
+  labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
+       title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons", 
+       subtitle = "All Research Locations") +
+  scale_y_log10() +
+  scale_x_date(date_labels = "%Y", date_breaks = "2 year") +
+  theme(axis.text.x = element_text(angle = 90)) 
+print(NonSeasonal.Plot)
+
+```
 
 
 \newpage
