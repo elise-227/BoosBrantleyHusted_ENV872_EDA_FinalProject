@@ -84,7 +84,7 @@ We chose to investigate discharge data in Florida, North Carolina, and New York 
 
 ## Question 2: Has one portion of the East Coast of the US eperienced a disproportionate increase in hurricane activity, and its associated discharge, compared to other portions commonly affected by these hurricanes?
 
-Are the general locations of hurricanes shifting towards the poles in the northern &/or southern hemisphere?
+## Question 3: Are the general locations of hurricanes shifting towards the poles in the northern &/or southern hemisphere?
 
 \newpage
 
@@ -100,7 +100,40 @@ All datasets used in this analysis were downloaded from the USGS website, specif
 ```
 
 ```{r NC Wrangle}
+# initial tidying of dataset
+NewRiver.Discharge.RAW <- NewRiver.Discharge.RAW[-c(1), ] #removing non-data row
 
+NewRiver.Discharge.PROC <- NewRiver.Discharge.RAW %>% 
+                        select(agency_cd, site_no, 
+                               X89345_00060, X89346_00065, Date) #selecting necessary columns
+
+colnames(NewRiver.Discharge.PROC) <- c("Agency", "Site_No",
+                            "Discharge_cfs", "GageHeight_ft", "Date") #changing column names
+  
+# setting discharge and gage height columns as numeric
+NewRiver.Discharge.PROC$Discharge_cfs <- as.numeric(NewRiver.Discharge.PROC$Discharge_cfs)
+NewRiver.Discharge.PROC$GageHeight_ft <- as.numeric(NewRiver.Discharge.PROC$GageHeight_ft)
+
+NewRiver.Discharge.PROC <- NewRiver.Discharge.PROC %>% 
+                        group_by(Date) %>%  #grouping by date
+                        mutate(Year = year(Date), #creating year column
+                               Month = month(Date), #creating month column
+                               Day = day(Date)) %>% #creating day column
+                        filter(Year >= 1990) %>% #filtering for data 1990 or later
+                      filter(Month > 5 & Month < 11) #filtering for data in hurricane season
+
+# saving processd file as csv
+write.csv(NewRiver.Discharge.PROC, "./Data/Processed/NC_Discharge_NewRiver_PROC.csv", row.names = FALSE)
+                        
+# creating daily discharge dataset
+NewRiver.Daily.DischargeGage <- NewRiver.Discharge.PROC %>%  
+            summarise(MeanDailyDischarge_cfs = mean(Discharge_cfs), #daily mean discharge
+                      MeanDailyGageHeight_ft = mean(GageHeight_ft)) #daily mean gage height
+
+# filling missing data with linear interpolation
+NewRiver.Daily.Discharge.Clean <-
+  NewRiver.Daily.DischargeGage %>%
+  mutate(Discharge_cfs_Clean = zoo::na.approx(MeanDailyDischarge_cfs))
 ```
 
 ```{r FL Wrangle}
