@@ -57,10 +57,7 @@ theme_set(my_theme)
 NY_Discharge <- read.csv("../Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactors = TRUE)
 
 #North Carolina Data
-<<<<<<< HEAD
 NC_Discharge <- read.csv("../Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
-=======
-NC_Discharge <- read.csv("Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
 
 #Florida data
 #read in both sheets of the data since data was too big to fit on one
@@ -68,7 +65,6 @@ florida_part2 <- read.csv("../Data/Raw/florida_round2.csv", stringsAsFactors = T
 florida_part2_join <- read.csv("../Data/Raw/florida_round2_1.csv", stringsAsFactors = T)
 #join the two datasets
 join <- rbind(florida_part2, florida_part2_join)
->>>>>>> 8baa879f6ae7652148b2715bd287cbba92f89717
 ```
 
 
@@ -302,18 +298,18 @@ plot(FL_NonSeasonal.Plot)
 ```
 
 ```{r combined plot}
-combined_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, aes(x = Date, y = data)) +
+combined_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, 
+                                    aes(x = Date, y = data)) +
   scale_y_log10() +
   geom_point(alpha = 0.0) +
   geom_smooth(method = "lm", color = "deeppink1") +
- # geom_point(NY_Combine_Nonseasonal, aes(x = Date, y = Nonseasonal), alpha = 0.0) + 
- # geom_smooth(method = "lm", color = "turqouise4") +
-   labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
+  geom_point(NY_Combine_Nonseasonal, aes(x = Date, y = Nonseasonal), alpha = 0.0) + 
+  geom_smooth(method = "lm", color = "turqouise4") +
+  labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
        title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons")
   scale_x_date(date_labels = "%Y", date_breaks = "2 year") +
   theme(axis.text.x = element_text(angle = 90)) 
 plot(combined_NonSeasonal.Plot)
->>>>>>> 8baa879f6ae7652148b2715bd287cbba92f89717
 ```
 
 
