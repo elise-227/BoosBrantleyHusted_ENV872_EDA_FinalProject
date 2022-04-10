@@ -78,7 +78,7 @@ We chose to investigate discharge data in Florida, North Carolina, and New York 
 
 ## Question 1: Has there been an overall increase in mean daily discharge during the Atlantic hurricane season from 1990 - 2021?
 
-## Question 2: Has one portion of the East Coast of the US eperienced a disproportionate increase in hurricane activity, and its associated discharge, compared to other portions commonly affected by these hurricanes?
+## Question 2: Has one portion of the East Coast of the US experienced a disproportionate increase in hurricane activity, and its associated discharge, compared to other portions commonly affected by these hurricanes?
 
 ## Question 3: Are the general locations of hurricanes shifting towards the poles in the northern &/or southern hemisphere?
 
@@ -191,6 +191,8 @@ ggplot(florida_1990_edit, aes(x = Date, y = log(Daily_Discharge_clean)))+
   labs(title = "Discharge in Florida during Hurricane Months")+
   xlab("Date") +
   ylab("Mean Daily Discharge (cfs)")
+  scale_y_discrete(c(0,1000))+
+  
 ```
 
 ```{r ex an NC}
