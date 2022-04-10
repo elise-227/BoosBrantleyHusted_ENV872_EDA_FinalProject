@@ -298,12 +298,12 @@ plot(FL_NonSeasonal.Plot)
 ```
 
 ```{r combined plot}
-combined_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, 
-                                    aes(x = Date, y = data)) +
+combined_NonSeasonal.Plot <- ggplot() +
   scale_y_log10() +
-  geom_point(alpha = 0.0) +
+  geom_point(data=florida_hurricane_Decomposed_Components, 
+             aes(x = Date, y = data), alpha = 0) +
   geom_smooth(method = "lm", color = "deeppink1") +
-  geom_point(NY_Combine_Nonseasonal, aes(x = Date, y = Nonseasonal), alpha = 0.0) + 
+  geom_point(NY_Combine_Nonseasonal, aes(x = Date, y = Nonseasonal), alpha = 0) + 
   geom_smooth(method = "lm", color = "turqouise4") +
   labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
        title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons")
