@@ -319,6 +319,13 @@ plot(combined_NonSeasonal.Plot)
 
 # Summary and Conclusions
 
+State           | Tau value     | P-value
+--------------- | ------------- | ------------
+New York        | 0.13          | =< 2.22e-16
+North Carolina  | 0.0595        | =< 2.22e-16
+Florida         | -0.0639       | 1.9569e-11
+
+
 
 \newpage
 
