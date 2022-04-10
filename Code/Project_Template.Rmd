@@ -33,6 +33,13 @@ library(trend)
 library(dygraphs)
 library(xts)
 library(ggfortify)
+require(dplyr)
+library(Kendall)
+library(tseries)
+require(sf)
+require(leaflet)
+require(mapview)
+mapviewOptions(fgb = FALSE)
 
 # Set your ggplot theme
 
@@ -132,6 +139,14 @@ write.csv(florida_1990_edit, "../Data/Processed/flordia_1990_processed.csv")
 
 # Exploratory Analysis 
 
+```{r map of locations}
+site_locations <- read.csv("../Data/Raw/Site_locations.csv", stringsAsFactors = T)
+site_locations.sf <- site_locations %>%
+st_as_sf(coords = c('Long','Lat'),
+         crs=4269)
+mapview(site_locations.sf, zcol = "Site.Name")
+```
+
 ```{r ex an FL}
 #plot discharge before running time series on the log scale
 ggplot(florida_1990_edit, aes(x = Date, y = log(Daily_Discharge_clean)))+
@@ -146,7 +161,53 @@ ggplot(florida_1990_edit, aes(x = Date, y = log(Daily_Discharge_clean)))+
 \newpage
 
 # Analysis
+```{r NY analysis}
 
+```
+
+```{r NC analysis}
+
+
+```
+
+```{r FL analysis}
+#regular time series
+florida_hurricane_ts <- ts(florida_1990_edit$Daily_Discharge_clean, start=c(1990,6), frequency = 153)  
+florida_hurricane_ts
+
+#decomposed time series
+florida_hurricane_Decomposed <- stl(florida_hurricane_ts, s.window = "periodic")
+plot(florida_hurricane_Decomposed)
+#filtering out seasonal data
+florida_hurricane_Decomposed_Components <- as.data.frame(florida_hurricane_Decomposed$time.series[,2:3])
+florida_hurricane_Decomposed_Components <- florida_hurricane_Decomposed_Components %>%
+  mutate(data = trend + remainder) 
+florida_hurricane_Decomposed_Components <- mutate(florida_hurricane_Decomposed_Components,
+                        Date = florida_1990_edit$Date)
+
+#run time series on new data with seasonal removed
+nonseasonal_data_florida_ts <- ts(florida_hurricane_Decomposed_Components$data,
+                                start=c(1990,6),
+                                frequency=153) 
+plot(nonseasonal_data_florida_ts)
+
+#look for trend and significance 
+florida_trend <- MannKendall(nonseasonal_data_florida_ts)
+florida_trend
+summary(florida_trend)
+
+#plot of nonseasonal trend
+FL_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, aes(x = Date, y = data)) +
+  scale_y_log10() +
+  geom_point(color = "deeppink1", size = 0.6) +
+  labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
+       title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons", 
+       subtitle = "North Prong St. Sebastian River, Florida") +
+  geom_smooth(method = "lm", color = "black") +
+  scale_x_date(date_labels = "%Y", date_breaks = "2 year") +
+  theme(axis.text.x = element_text(angle = 90)) 
+plot(FL_NonSeasonal.Plot)                               
+```
 
 
 \newpage
