@@ -180,7 +180,7 @@ st_as_sf(coords = c('Long','Lat'),
          crs=4269)
 mapview(site_locations.sf[1,], zcol = "Site.Name", col.regions = "deeppink1") +
 mapview(site_locations.sf[2,], zcol = "Site.Name", col.regions = "turquoise4") +
-mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "green")
+mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "forestgreen")
 ```
 
 ```{r ex an FL}
