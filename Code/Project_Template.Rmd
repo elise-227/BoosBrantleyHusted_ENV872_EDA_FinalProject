@@ -50,6 +50,13 @@ NY_Discharge <- read.csv("Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactors 
 
 #North Carolina Data
 NC_Discharge <- read.csv("Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
+
+#Florida data
+#read in both sheets of the data since data was too big to fit on one
+florida_part2 <- read.csv("./Data/Raw/florida_round2.csv", stringsAsFactors = T)
+florida_part2_join <- read.csv("./Data/Raw/florida_round2_1.csv", stringsAsFactors = T)
+#join the two datasets
+join <- rbind(florida_part2, florida_part2_join)
 ```
 
 
@@ -72,6 +79,22 @@ Are the general locations of hurricanes shifting towards the poles in the northe
 # Dataset Information
 
 All datasets used in this analysis were downloaded from the USGS website, specifically from their historical records of discharge data recorded by field dataloggers. The data was obtained from three states varying in latitude along the East Coast (i.e., Florida, North Carolina, and New York). Stream gage locations were selected based on proximity to major river basins and vulnerable counties susceptible to hurricane impacts. Additionally, Gage locations were chosen with sufficient data, going back to at least the 1990s. Similar timeline ranges for the datatsets ensures a time series analysis that is comparable among all three sites. Discharge data was the data type used in this analysis with all datasets having at minimum daily recordings but some having recordings as often as every 30 minutes. 
+
+\newpage
+
+#Data Wrangling
+```{r NY Wrangle}
+
+```
+
+```{r NC Wrangle}
+
+```
+
+```{r FL Wrangle}
+
+
+```
 
 
 \newpage
