@@ -319,6 +319,8 @@ plot(combined_NonSeasonal.Plot)
 
 # Summary and Conclusions
 
+There appears to be a poleward trend in hurricanes based on the trend in discharge values during hurricane months across the east coast. 
+
 State           | Tau value     | P-value
 --------------- | ------------- | ------------
 New York        | 0.13          | =< 2.22e-16
