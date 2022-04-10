@@ -144,7 +144,9 @@ site_locations <- read.csv("../Data/Raw/Site_locations.csv", stringsAsFactors = 
 site_locations.sf <- site_locations %>%
 st_as_sf(coords = c('Long','Lat'),
          crs=4269)
-mapview(site_locations.sf, zcol = "Site.Name")
+mapview(site_locations.sf[1,], zcol = "Site.Name", col.regions = "deeppink1") +
+mapview(site_locations.sf[2,], zcol = "Site.Name", col.regions = "turquoise4") +
+mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "green")
 ```
 
 ```{r ex an FL}
@@ -208,6 +210,10 @@ FL_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, aes(x = D
   scale_x_date(date_labels = "%Y", date_breaks = "2 year") +
   theme(axis.text.x = element_text(angle = 90)) 
 plot(FL_NonSeasonal.Plot)                               
+```
+
+```{r combined plot}
+
 ```
 
 
