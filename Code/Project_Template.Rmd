@@ -144,7 +144,7 @@ site_locations <- read.csv("../Data/Raw/Site_locations.csv", stringsAsFactors = 
 site_locations.sf <- site_locations %>%
 st_as_sf(coords = c('Long','Lat'),
          crs=4269)
-mapview(site_locations.sf, zcol = "Site.Name")
+mapview(site_locations.sf, col.regions = c("green","deeppink1","turquoise4"), zcol = "Site.Name")
 ```
 
 ```{r ex an FL}
