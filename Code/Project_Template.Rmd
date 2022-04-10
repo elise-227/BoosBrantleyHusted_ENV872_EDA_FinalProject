@@ -92,8 +92,39 @@ All datasets used in this analysis were downloaded from the USGS website, specif
 ```
 
 ```{r FL Wrangle}
-
-
+#clean the original florida dataset
+florida_clean <- join %>%
+  mutate(Date = ymd(Date)) %>%
+  mutate(State = "Florida") %>%
+  select(State, Date, Discharge)
+#days with multiple observations summarise to get mean and filter out only hurricane months
+florida_hurricane <- florida_clean %>%
+  group_by(Date) %>%
+  summarise(Daily_Discharge = mean(Discharge)) %>%
+  mutate(month = month(Date)) %>%
+  filter(month >= 6 & month <= 10) 
+#create a date dataframe of timespan
+Date  <- seq(as.Date("1987-01-01"),as.Date("2021-10-31"), by = "days")
+Dates <- as.data.frame(Date)
+#filter out hurricane months
+date_join <- Dates %>%
+  mutate(month = month(Date)) %>%
+  filter(month >= 6 & month <= 10) %>%
+  select(1)
+#join the data sets to allow us to know which days don't have observations
+#interpolate the days with NAs
+fh_clean <-left_join(date_join, florida_hurricane, by = "Date")
+fh_clean <- fh_clean %>%
+  select(1,2) %>%
+  mutate(Daily_Discharge_clean = zoo::na.approx(Daily_Discharge))
+#save to processed folder 
+write.csv(fh_clean, "./Data/Processed/flordia_1987_processed.csv")
+#trimming data set for comparison, starting at 1990
+florida_1990_edit <- fh_clean %>%
+  mutate(year = year(Date)) %>%
+  filter(year >= 1990) 
+#save to processed folder 
+write.csv(florida_1990_edit, "./Data/Processed/flordia_1990_processed.csv")
 ```
 
 
