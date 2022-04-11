@@ -5,7 +5,7 @@ output:
     fig_caption: yes
     number_sections: yes
 geometry: margin=2.54cm
-title: "Insert title of project here"
+title: "Hurricane Trends Along the East Coast"
 subtitle: "Web address for GitHub repository"
 author: "Elise Boos, Andrew Brantley, Kelsey Husted"
 fontsize: 12pt
