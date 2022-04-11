@@ -1,4 +1,4 @@
-# BoosBrantleyHusted_ENV872_EDA_FinalProject
+# BoosBrantleyHusted ENV872 EDA Final Project
 Spring 2022 EDA Final Project: Atlantic Hurricane Season Trends
 
 Instructions: copy and paste this template into your project README file (found in the parent folder of the repository). Fill in relevant information as requested.
