@@ -36,8 +36,8 @@ NC_Discharge_NewRiver_RAW.csv
   2. Column Meanings: agency (USGS), USGS gage #, date and time of collection, time zone, gage height in ft (backup), backup gage height data certification status, discharge (cfs), discharge data certification status, gage height in ft, gage height data certification status
 
 NC_Discharge_NewRiver_PROC.csv
-  1. Columns: "Agency", "Site_No", "Discharge_cfs", "GageHeight_ft", "Date", "Year", "Month", "Day"
-  2. Column Meanings: agency (USGS), USGS gage #, mean daily discharge (cfs), mean daily gage height (ft), date, year, month, and day
+  1. Columns: "Agency", "Site_No", "Discharge_cfs", "Date", "Year", "Month", "Day"
+  2. Column Meanings: agency (USGS), USGS gage #, mean daily discharge (cfs), date, year, month, and day
 
 <For each data file in the repository, describe the data contained in each column. Include the column name, a description of the information, the class of data, and any units associated with the data. Create a list or table for each data file.> 
 
