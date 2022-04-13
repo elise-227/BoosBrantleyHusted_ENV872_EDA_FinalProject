@@ -27,19 +27,26 @@ my_theme <- theme_classic(base_size = 14) +
 
 theme_set(my_theme)
 
+# filling missing data with linear interpolation
+NY_Daily.Discharge.Clean <-
+  NY_Discharge %>%
+  mutate(MeanDischargeClean = zoo::na.approx(X104599_00060_00003))
+view(NY_Daily.Discharge.Clean)
+
+
+
 #Wrangle Data
 NY_Discharge.processed <-
-  NY_Discharge %>%
+  NY_Daily.Discharge.Clean %>%
   rename(Agency = agency_,
          SiteNumber = cd.......site_no,
-         MeanDischarge = X104599_00060_00003) %>%
+         MeanDischarge = MeanDischargeClean) %>%
   select(Agency, SiteNumber, MeanDischarge, Month, Date, Year) %>%
   filter(Month > 5, Month < 11,
          Date >= "1990-06-01")
 view(NY_Discharge.processed)
 
-#log mean discharge (not necessary at the moment; will use later on in a plot)
-#NY_Discharge.processed$LogDischarge = log(NY_Discharge.processed$MeanDischarge)
+
 
 #saving processed file as a csv
 write.csv(NY_Discharge.processed, "./Data/Processed/NY_DischargeData_Processed", row.names = FALSE)
@@ -56,24 +63,16 @@ ggplot(NY_Discharge.processed, aes(x = Date, y = MeanDischarge)) +
   theme(axis.text.x = element_text(angle = 90)) 
   
 
-# filling missing data with linear interpolation
-NY_Daily.Discharge.Clean <-
-  NY_Discharge.processed %>%
-  mutate(MeanDischargeClean = zoo::na.approx(MeanDischarge))
-view(NY_Daily.Discharge.Clean)
-
-#log mean discharge
-NY_Daily.Discharge.Clean$LogMeanDischarge = log(NY_Daily.Discharge.Clean$MeanDischargeClean)
-view(NY_Daily.Discharge.Clean)
-
 
 
 #NY Daily Discharge time-series
-NY_DailyDischarge.ts <- ts(NY_Daily.Discharge.Clean$MeanDischargeClean, start = c(1990,01), frequency = 153)
+NY_DailyDischarge.ts <- ts(NY_Discharge.processed$MeanDischarge, start = c(1990,01), frequency = 153)
 head(NY_DailyDischarge.ts, 10)
+
 #Decompose
 NY_DailyDischarge.decompose <- stl(NY_DailyDischarge.ts, s.window = "periodic")
 plot(NY_DailyDischarge.decompose)
+
 
 --------------------------------------------------------------------------------------
 #Messing with Interactive time-series functions
@@ -138,5 +137,4 @@ NY_NonSeasonal.Plot2 <- ggplot(NY_Combine_Nonseasonal, aes(x = Date, y = Nonseas
   theme(axis.text.x = element_text(angle = 90)) 
                                
 print(NY_NonSeasonal.Plot2)
-
 

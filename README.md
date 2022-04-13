@@ -29,17 +29,29 @@ Folders in this repository include: Code, Data/Raw, & Data/Processed. Data files
 
 ## Metadata
 
+<For each data file in the repository, describe the data contained in each column. Include the column name, a description of the information, the class of data, and any units associated with the data. Create a list or table for each data file.>
+
 Raw Data:
 
 NC_Discharge_NewRiver_RAW.csv
   1. Columns: "agency_cd", "site_no", "datetime", "tz_cd", "X164771_00065", "X164771_00065_cd", "X89345_00060", "X89345_00060_cd", "X89346_00065", "X89346_00065_cd", "Date" 
   2. Column Meanings: agency (USGS), USGS gage #, date and time of collection, time zone, gage height in ft (backup), backup gage height data certification status, discharge (cfs), discharge data certification status, gage height in ft, gage height data certification status
 
+NY_MeanDailyDischarge.csv
+  1. Columns: "agency_", "cd.......site_no", "datetime", "X104599_00060_00003", "X104599_00060_00003", "Month", "Day", "Year", "Date"
+  2. Column Meanings: agency (USGS), USGS gage number, date and time of collection, mean daily discharge (csf), collection approval, Month, Day, Year, Date
+
+
+Processed Data:
+
 NC_Discharge_NewRiver_PROC.csv
   1. Columns: "Agency", "Site_No", "Discharge_cfs", "Date", "Year", "Month", "Day"
   2. Column Meanings: agency (USGS), USGS gage #, mean daily discharge (cfs), date, year, month, and day
+  
+NY_DischargeData_Processed.csv
+  1. Columns: "Agency", "SiteNumber", "MeanDischarge", "Month", "Date", "Year"
+  2. Column Meanings: Agency (USGS), USGS gage number, mean daily discharge (csf), Month, Date, Year
 
-<For each data file in the repository, describe the data contained in each column. Include the column name, a description of the information, the class of data, and any units associated with the data. Create a list or table for each data file.> 
 
 ## Scripts and code
 

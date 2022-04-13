@@ -55,7 +55,9 @@ theme_set(my_theme)
 
 # Load your datasets
 #New York Data
-NY_Discharge <- read.csv("../Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactors = TRUE)
+NY_Discharge <- read.csv("./Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactors = TRUE)
+#Format Date
+NY_Discharge$Date <- as.Date(NY_Discharge$Date, format = "%m/%d/%Y")
 
 #North Carolina Data
 NC_Discharge <- read.csv("../Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
@@ -94,25 +96,29 @@ All datasets used in this analysis were downloaded from the USGS website, specif
 #Data Wrangling
 ```{r NY Wrangle}
 #Wrangle Data
-NY_Discharge.processed <-
+
+# filling missing data with linear interpolation
+NY_Daily.Discharge.Clean <-
   NY_Discharge %>%
+  mutate(MeanDischargeClean = zoo::na.approx(X104599_00060_00003))
+view(NY_Daily.Discharge.Clean)
+
+
+#Wrangle Data
+NY_Discharge.processed <-
+  NY_Daily.Discharge.Clean %>%
   rename(Agency = agency_,
          SiteNumber = cd.......site_no,
-         MeanDischarge = X104599_00060_00003) %>%
+         MeanDischarge = MeanDischargeClean) %>%
   select(Agency, SiteNumber, MeanDischarge, Month, Date, Year) %>%
   filter(Month > 5, Month < 11,
          Date >= "1990-06-01")
 view(NY_Discharge.processed)
 
+
+
 #saving processed file as a csv
 write.csv(NY_Discharge.processed, "./Data/Processed/NY_DischargeData_Processed", row.names = FALSE)
-
-# filling missing data with linear interpolation
-NY_Daily.Discharge.Clean <-
-  NY_Discharge.processed %>%
-  mutate(MeanDischargeClean = zoo::na.approx(MeanDischarge))
-view(NY_Daily.Discharge.Clean)
-
 
 ```
 
@@ -251,12 +257,13 @@ NY_DailyDischargePlot
 ```{r NY analysis}
 
 #NY Daily Discharge time-series
-NY_DailyDischarge.ts <- ts(NY_Daily.Discharge.Clean$MeanDischargeClean, start = c(1990,01), frequency = 153)
+NY_DailyDischarge.ts <- ts(NY_Discharge.processed$MeanDischarge, start = c(1990,01), frequency = 153)
 head(NY_DailyDischarge.ts, 10)
 
 #Decompose
 NY_DailyDischarge.decompose <- stl(NY_DailyDischarge.ts, s.window = "periodic")
 plot(NY_DailyDischarge.decompose)
+
 
 #Nonseasonal MannKendall
 NY_Components <- as.data.frame(NY_DailyDischarge.decompose$time.series[,2:3])
@@ -280,6 +287,29 @@ NY_Trend.Nonseasonal
 #tau = 0.13; p-value = less than 0.05
 #the null hypothesis of the test (i.e., Seasonal Mann Kendall) states that the data is stationary
 #reject null hypothesis and we state that there is a trend
+
+#trying to create a plot for the ts but not working! (I'll try ggplot instead below as well)
+#autoplot version
+NY_NonSeasonal.Plot1 <- autoplot(NY_Nonseasonal.ts) +
+  scale_y_log10() +
+  labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
+       title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons (1990-2021)", 
+       subtitle = "Cold Spring Harbor, New York") +
+  geom_smooth(method = "lm")
+print(NY_NonSeasonal.Plot1)
+ 
+#ggplot version (working)
+NY_NonSeasonal.Plot2 <- ggplot(NY_Combine_Nonseasonal, aes(x = Date, y = Nonseasonal)) +
+  scale_y_log10() +
+  geom_point(color = "turquoise4", size = 0.6) +
+  labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
+       title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons", 
+       subtitle = "Cold Spring Harbor, New York") +
+  geom_smooth(method = "lm", color = "black") +
+  scale_x_date(date_labels = "%Y", date_breaks = "2 year") +
+  theme(axis.text.x = element_text(angle = 90)) 
+                               
+print(NY_NonSeasonal.Plot2)
 
 ```
 
