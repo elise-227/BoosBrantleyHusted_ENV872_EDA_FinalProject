@@ -63,7 +63,7 @@ NY_Discharge <- read.csv("./Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactor
 NY_Discharge$Date <- as.Date(NY_Discharge$Date, format = "%m/%d/%Y")
 
 #North Carolina Data
-NC_Discharge <- read.csv("./Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
+NewRiver.Discharge.RAW <- read.csv("./Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
 # setting date column as date
 NewRiver.Discharge.RAW$Date <- as.Date(NewRiver.Discharge.RAW$datetime, format = '%m/%d/%y')
 
