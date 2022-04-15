@@ -1,16 +1,18 @@
 ---
-output: 
+title: "Hurricane Trends Along the East Coast"
+author: "Elise Boos, Andrew Brantley, Kelsey Husted"
+output:
+  html_document:
+    df_print: paged
   pdf_document:
     keep_tex: yes
     fig_caption: yes
     number_sections: yes
+subtitle: https://github.com/elise-227/BoosBrantleyHusted_ENV872_EDA_FinalProject.git
 geometry: margin=2.54cm
-title: "Hurricane Trends Along the East Coast"
-subtitle: "https://github.com/elise-227/BoosBrantleyHusted_ENV872_EDA_FinalProject.git"
-author: "Elise Boos, Andrew Brantley, Kelsey Husted"
 fontsize: 12pt
 mainfont: Times New Roman
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -66,11 +68,10 @@ NC_Discharge <- read.csv("./Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFa
 NewRiver.Discharge.RAW$Date <- as.Date(NewRiver.Discharge.RAW$datetime, format = '%m/%d/%y')
 
 #Florida data
-#read in both sheets of the data since data was too big to fit on one
-florida_part2 <- read.csv("./Data/Raw/florida_round2.csv", stringsAsFactors = T)
-florida_part2_join <- read.csv("./Data/Raw/florida_round2_1.csv", stringsAsFactors = T)
-#join the two datasets
-join <- rbind(florida_part2, florida_part2_join)
+florida_hurricane_1990 <- read.csv("./Data/Processed/florida_hurricane_1990_processed.csv", 
+                                   stringsAsFactors = T)
+#setting date column as date 
+florida_hurricane_1990$Date <- as.Date(florida_hurricane_1990$Date, format = '%Y-%m-%d')
 ```
 
 
@@ -165,42 +166,6 @@ NewRiver.Daily.Discharge.Clean <-
   mutate(Discharge_cfs_Clean = zoo::na.approx(MeanDailyDischarge_cfs))
 ```
 
-```{r FL Wrangle, include=FALSE}
-#clean the original florida dataset
-florida_clean <- join %>%
-  mutate(Date = ymd(Date)) %>%
-  mutate(State = "Florida") %>%
-  select(State, Date, Discharge)
-#days with multiple observations summarise to get mean and filter out only hurricane months
-florida_hurricane <- florida_clean %>%
-  group_by(Date) %>%
-  summarise(Daily_Discharge = mean(Discharge)) %>%
-  mutate(month = month(Date)) %>%
-  filter(month >= 6 & month <= 10) 
-#create a date dataframe of timespan
-Date  <- seq(as.Date("1987-01-01"),as.Date("2021-10-31"), by = "days")
-Dates <- as.data.frame(Date)
-#filter out hurricane months
-date_join <- Dates %>%
-  mutate(month = month(Date)) %>%
-  filter(month >= 6 & month <= 10) %>%
-  select(1)
-#join the data sets to allow us to know which days don't have observations
-#interpolate the days with NAs
-fh_clean <-left_join(date_join, florida_hurricane, by = "Date")
-fh_clean <- fh_clean %>%
-  select(1,2) %>%
-  mutate(Daily_Discharge_clean = zoo::na.approx(Daily_Discharge))
-#save to processed folder 
-write.csv(fh_clean, "./Data/Processed/flordia_1987_processed.csv")
-#trimming data set for comparison, starting at 1990
-florida_1990_edit <- fh_clean %>%
-  mutate(year = year(Date)) %>%
-  filter(year >= 1990) 
-#save to processed folder 
-write.csv(florida_1990_edit, "./Data/Processed/flordia_1990_processed.csv")
-```
-
 
 \newpage
 
@@ -208,7 +173,7 @@ write.csv(florida_1990_edit, "./Data/Processed/flordia_1990_processed.csv")
 
 The exploratory analysis of this data involved creating a map of the locations of the research gages along the East Coast of the United States was created to orient readers to the locality of the research. Also included n the exploratory analysis is the initial visualizations of discharge data of each of the research locations during hurricane seasons from 1990-2021. After initial graphs showed poorly visualized data a log scale was applied to the y-axis in order to better visualize any trend that may be occurring. Comparing differences between the intensity and frequency, and changes in these variables over time, allowed for the formation of predictions by researchers on possible differences in each research location as well as any changes over time. However, to fully understand these trends and trend changes the analysis that follows was performed. 
 
-```{r map of locations, echo=FALSE, fig.cap='Locations}
+```{r map of locations, echo=FALSE, fig.cap='Locations'}
 site_locations <- read.csv("./Data/Raw/Site_locations.csv", stringsAsFactors = T)
 site_locations.sf <- site_locations %>%
 st_as_sf(coords = c('Long','Lat'),
@@ -220,14 +185,12 @@ mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "forestgreen")
 
 ```{r ex an FL, fig.cap='Florida Discharge (cfs) 1990-2021'}
 #plot discharge before running time series on the log scale
-ggplot(florida_1990_edit, aes(x = Date, y = log(Daily_Discharge_clean)))+
+ggplot(florida_hurricane_1990, aes(x = Date, y = log(Daily_Discharge_clean)))+
   geom_point(color = "deeppink1")+
   geom_smooth(method = lm, color = "black")+
-  labs(title = "Discharge in Florida during Hurricane Months")+
-  xlab("Date") +
-  ylab("Mean Daily Discharge (cfs)")
-  scale_y_discrete(c(0,1000))+
-  
+  labs(x = "Date", y = "Mean Daily Discharge (cfs)",
+       title = "Mean Daily Discharge During Hurrcane Seasons (1990-2021)", 
+       subtitle = "North Prong St. Sebastian River, Florida") 
 ```
 
 ```{r ex an NC, fig.cap='North Carolina Discharge (cfs) 1990-2021'}
@@ -369,7 +332,7 @@ MannKendall(NonSeasonal.DailyDischarge.ts)
 
 ```{r FL analysis}
 #regular time series
-florida_hurricane_ts <- ts(florida_1990_edit$Daily_Discharge_clean, start=c(1990,6), frequency = 153)  
+florida_hurricane_ts <- ts(florida_hurricane_1990$Daily_Discharge_clean, start=c(1990,6), frequency = 153)  
 florida_hurricane_ts
 
 #decomposed time series
@@ -381,7 +344,7 @@ florida_hurricane_Decomposed_Components <- florida_hurricane_Decomposed_Componen
   mutate(data = trend + remainder) 
 #add date column
 florida_hurricane_Decomposed_Components <- mutate(florida_hurricane_Decomposed_Components,
-                        Date = florida_1990_edit$Date)
+                        Date = florida_hurricane_1990$Date)
 
 #run time series on new data with seasonal removed
 nonseasonal_data_florida_ts <- ts(florida_hurricane_Decomposed_Components$data,
@@ -449,7 +412,7 @@ State           | Tau value     | P-value
 --------------- | ------------- | ------------
 New York        | 0.13          | =< 2.22e-16
 North Carolina  | 0.0572        | =< 2.22e-16
-Florida         | -0.0639       | 1.9569e-11
+Florida         | -0.0516       |  7.7953e-08
 
 
 
