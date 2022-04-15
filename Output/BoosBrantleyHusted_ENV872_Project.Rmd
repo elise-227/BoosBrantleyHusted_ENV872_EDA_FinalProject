@@ -254,6 +254,11 @@ NY_DailyDischargePlot
 \newpage
 
 # Analysis
+
+The analysis of these datasets centers on creating time series objects of the discharge data. These time series objects are then decomposed to analyze the trend, seasonality, and remainder for the data values. New dataframes were then created with these three aspects of the time series. Within these dataframes, the trend and remainder values for each data point were added together to create a "non-seasonal" discharge value in order to better understand the actual changes in hurricane intensity and frequency during the hurricane season. 
+
+These non-seasonal values were then used to create another time series object and this was graphed to visualize any trends that may be occurring in the data as well as the "spread" of the discharge values, indicating differences in discharge as a proxy for hurricane intensity. To analyze trends on a statistical basis, rather than visual, a Mann Kendall test was performed. This test provided a tau value indicating whether the trend was positive or negative, which could then be compared across all three research locations, as well as the p-value for that tau value to indicate the statistical significance of the results. 
+
 ```{r NY analysis}
 
 #NY Daily Discharge time-series
