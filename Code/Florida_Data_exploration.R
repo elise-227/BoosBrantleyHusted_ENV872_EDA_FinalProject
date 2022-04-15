@@ -14,4 +14,4 @@ ggplot(florida_1990, aes(x = Date, y = log(Daily_Discharge_clean)))+
   geom_smooth(method = lm, color = "black")+
   labs(x = "Date", y = "Mean Daily Discharge (cfs)",
        title = "Mean Daily Discharge During Hurrcane Seasons (1990-2021)", 
-       subtitle = ", Florida") 
+       subtitle = "North Prong St. Sebastian River, Florida") 
