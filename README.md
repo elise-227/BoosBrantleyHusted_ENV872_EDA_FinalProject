@@ -11,8 +11,8 @@ This repository contains downloaded USGS data for three locations along the East
 
 ## Investigators
 
-Andrew Brantley
-Elise Boos
+Andrew Brantley,
+Elise Boos,
 Kelsey Husted
 
 ## Keywords
@@ -33,24 +33,24 @@ Folders in this repository include: Output, Code, Data/Raw, & Data/Processed. Da
 
 Raw Data:
 
-NC_Discharge_NewRiver_RAW.csv
-  1. Columns: "agency_cd", "site_no", "datetime", "tz_cd", "X164771_00065", "X164771_00065_cd", "X89345_00060", "X89345_00060_cd", "X89346_00065", "X89346_00065_cd", "Date" 
-  2. Column Meanings: agency (USGS), USGS gage #, date and time of collection, time zone, gage height in ft (backup), backup gage height data certification status, discharge (cfs), discharge data certification status, gage height in ft, gage height data certification status
+1. NC_Discharge_NewRiver_RAW.csv
+    1. Columns: "agency_cd", "site_no", "datetime", "tz_cd", "X164771_00065", "X164771_00065_cd", "X89345_00060", "X89345_00060_cd", "X89346_00065", "X89346_00065_cd", "Date" 
+    2. Column Meanings: agency (USGS), USGS gage #, date and time of collection, time zone, gage height in ft (backup), backup gage height data certification status, discharge (cfs), discharge data certification status, gage height in ft, gage height data certification status
 
-NY_MeanDailyDischarge.csv
-  1. Columns: "agency_", "cd.......site_no", "datetime", "X104599_00060_00003", "X104599_00060_00003", "Month", "Day", "Year", "Date"
-  2. Column Meanings: agency (USGS), USGS gage number, date and time of collection, mean daily discharge (csf), collection approval, Month, Day, Year, Date
+2. NY_MeanDailyDischarge.csv
+    1. Columns: "agency_", "cd.......site_no", "datetime", "X104599_00060_00003", "X104599_00060_00003", "Month", "Day", "Year", "Date"
+    2. Column Meanings: agency (USGS), USGS gage number, date and time of collection, mean daily discharge (csf), collection approval, Month, Day, Year, Date
 
 
 Processed Data:
 
-NC_Discharge_NewRiver_PROC.csv
-  1. Columns: "Agency", "Site_No", "Discharge_cfs", "Date", "Year", "Month", "Day"
-  2. Column Meanings: agency (USGS), USGS gage #, mean daily discharge (cfs), date, year, month, and day
+1. NC_Discharge_NewRiver_PROC.csv
+    1. Columns: "Agency", "Site_No", "Discharge_cfs", "Date", "Year", "Month", "Day"
+    2. Column Meanings: agency (USGS), USGS gage #, mean daily discharge (cfs), date, year, month, and day
   
-NY_DischargeData_Processed.csv
-  1. Columns: "Agency", "SiteNumber", "MeanDischarge", "Month", "Date", "Year"
-  2. Column Meanings: Agency (USGS), USGS gage number, mean daily discharge (csf), Month, Date, Year
+2. NY_DischargeData_Processed.csv
+    1. Columns: "Agency", "SiteNumber", "MeanDischarge", "Month", "Date", "Year"
+    2. Column Meanings: Agency (USGS), USGS gage number, mean daily discharge (csf), Month, Date, Year
 
 
 ## Scripts and code
