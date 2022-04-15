@@ -40,5 +40,5 @@ florida_hurricane_1990 <- fh_clean %>%
   select(Date, Daily_Discharge_clean)
   
 #save to processed folder 
-write.csv(florida_hurricane_1990, "./Data/Processed/flordia_hurricane_1990_processed.csv")
+write.csv(florida_hurricane_1990, "./Data/Processed/florida_hurricane_1990_processed.csv")
 
