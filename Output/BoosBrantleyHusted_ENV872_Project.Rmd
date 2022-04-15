@@ -208,8 +208,8 @@ write.csv(florida_1990_edit, "./Data/Processed/flordia_1990_processed.csv")
 
 The exploratory analysis of this data involved creating a map of the locations of the research gages along the East Coast of the United States was created to orient readers to the locality of the research. Also included n the exploratory analysis is the initial visualizations of discharge data of each of the research locations during hurricane seasons from 1990-2021. After initial graphs showed poorly visualized data a log scale was applied to the y-axis in order to better visualize any trend that may be occurring. Comparing differences between the intensity and frequency, and changes in these variables over time, allowed for the formation of predictions by researchers on possible differences in each research location as well as any changes over time. However, to fully understand these trends and trend changes the analysis that follows was performed. 
 
-```{r map of locations, fig.cap='Locations of Research Gage Sites'}
-site_locations <- read.csv("../Data/Raw/Site_locations.csv", stringsAsFactors = T)
+```{r map of locations, echo=FALSE, fig.cap='Locations}
+site_locations <- read.csv("./Data/Raw/Site_locations.csv", stringsAsFactors = T)
 site_locations.sf <- site_locations %>%
 st_as_sf(coords = c('Long','Lat'),
          crs=4269)
