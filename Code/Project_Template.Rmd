@@ -6,7 +6,7 @@ output:
     number_sections: yes
 geometry: margin=2.54cm
 title: "Hurricane Trends Along the East Coast"
-subtitle: "Web address for GitHub repository"
+subtitle: "https://github.com/elise-227/BoosBrantleyHusted_ENV872_EDA_FinalProject.git"
 author: "Elise Boos, Andrew Brantley, Kelsey Husted"
 fontsize: 12pt
 mainfont: Times New Roman
@@ -23,7 +23,7 @@ editor_options:
 \newpage
 
 ```{r setup, include=FALSE}
-# Set your working directory
+#Set your working directory
 getwd()
 
 # Load your packages
@@ -60,12 +60,12 @@ NY_Discharge <- read.csv("./Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactor
 NY_Discharge$Date <- as.Date(NY_Discharge$Date, format = "%m/%d/%Y")
 
 #North Carolina Data
-NC_Discharge <- read.csv("../Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
+NC_Discharge <- read.csv("./Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
 
 #Florida data
 #read in both sheets of the data since data was too big to fit on one
-florida_part2 <- read.csv("../Data/Raw/florida_round2.csv", stringsAsFactors = T)
-florida_part2_join <- read.csv("../Data/Raw/florida_round2_1.csv", stringsAsFactors = T)
+florida_part2 <- read.csv("./Data/Raw/florida_round2.csv", stringsAsFactors = T)
+florida_part2_join <- read.csv("./Data/Raw/florida_round2_1.csv", stringsAsFactors = T)
 #join the two datasets
 join <- rbind(florida_part2, florida_part2_join)
 ```
@@ -186,13 +186,13 @@ fh_clean <- fh_clean %>%
   select(1,2) %>%
   mutate(Daily_Discharge_clean = zoo::na.approx(Daily_Discharge))
 #save to processed folder 
-write.csv(fh_clean, "../Data/Processed/flordia_1987_processed.csv")
+write.csv(fh_clean, "./Data/Processed/flordia_1987_processed.csv")
 #trimming data set for comparison, starting at 1990
 florida_1990_edit <- fh_clean %>%
   mutate(year = year(Date)) %>%
   filter(year >= 1990) 
 #save to processed folder 
-write.csv(florida_1990_edit, "../Data/Processed/flordia_1990_processed.csv")
+write.csv(florida_1990_edit, "./Data/Processed/flordia_1990_processed.csv")
 ```
 
 
@@ -200,8 +200,8 @@ write.csv(florida_1990_edit, "../Data/Processed/flordia_1990_processed.csv")
 
 # Exploratory Analysis 
 
-```{r map of locations}
-site_locations <- read.csv("../Data/Raw/Site_locations.csv", stringsAsFactors = T)
+```{r map of locations, fig.cap='Locations of Research Gage Sites'}
+site_locations <- read.csv("./Data/Raw/Site_locations.csv", stringsAsFactors = T)
 site_locations.sf <- site_locations %>%
 st_as_sf(coords = c('Long','Lat'),
          crs=4269)
@@ -210,7 +210,7 @@ mapview(site_locations.sf[2,], zcol = "Site.Name", col.regions = "turquoise4") +
 mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "forestgreen")
 ```
 
-```{r ex an FL}
+```{r ex an FL, fig.cap='Florida Discharge (cfs) 1990-2021'}
 #plot discharge before running time series on the log scale
 ggplot(florida_1990_edit, aes(x = Date, y = log(Daily_Discharge_clean)))+
   geom_point(color = "deeppink1")+
@@ -222,7 +222,7 @@ ggplot(florida_1990_edit, aes(x = Date, y = log(Daily_Discharge_clean)))+
   
 ```
 
-```{r ex an NC}
+```{r ex an NC, fig.cap='North Carolina Discharge (cfs) 1990-2021'}
 # initial data visualiation
 DailyDischarge.Plot <- 
                 ggplot(NewRiver.Daily.DischargeGage, aes(Date, MeanDailyDischarge_cfs)) +
@@ -237,7 +237,7 @@ DailyDischarge.Plot <-
 DailyDischarge.Plot
 ```
 
-```{r ex NY}
+```{r ex NY, fig.cap='New York Discharge (cfs) 1990-2021'}
 NY_DailyDischargePlot <- ggplot(NY_Discharge.processed, aes(x = Date, y = MeanDischarge)) +
   scale_y_log10() +
   geom_point(color = "turquoise4", size = 0.7) +
@@ -394,7 +394,7 @@ FL_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, aes(x = D
 plot(FL_NonSeasonal.Plot)                               
 ```
 
-```{r combined plot}
+```{r combined plot, fig.cap='Non-Seasaonl Discharge Plot for all Gage Sites (cfs)'}
 # creating combined nonseasonal dataframe
 Date.df <- as.data.frame(NY_Combine_Nonseasonal$Date)
 NY.NonSeasonal.df <- as.data.frame(NY_Combine_Nonseasonal$Nonseasonal)
