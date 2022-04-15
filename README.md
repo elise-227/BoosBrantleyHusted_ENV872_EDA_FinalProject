@@ -1,10 +1,6 @@
 # BoosBrantleyHusted ENV872 EDA Final Project
 Spring 2022 EDA Final Project: Atlantic Hurricane Season Trends
 
-Instructions: copy and paste this template into your project README file (found in the parent folder of the repository). Fill in relevant information as requested.
-
-General notes: This is the read me file for the final EDA project. It includes information on the repository structure, files within it, and the premise of the project. 
-
 ## Summary
 
 This repository contains downloaded USGS data for three locations along the Eastern US Coast as well as code used to analyze trends for each of these locations. Trends in these three locations (New York, North Carolina, and Florida) are analyzed to determine changes in hurricane regimes over time. 
@@ -41,6 +37,10 @@ Raw Data:
     1. Columns: "agency_", "cd.......site_no", "datetime", "X104599_00060_00003", "X104599_00060_00003", "Month", "Day", "Year", "Date"
     2. Column Meanings: agency (USGS), USGS gage number, date and time of collection, mean daily discharge (csf), collection approval, Month, Day, Year, Date
 
+3. FloridaNorthProng_Discharge_1.csv
+   FloridaNorthProng_Discharge_2.csv
+   1. Columns: "Name", "Site", "Date", "Discharge"
+   2. Column Meanings: Name of agency (USGS), USGS gage number, Date of collection, mean daily discharge (cfs)
 
 Processed Data:
 
@@ -52,10 +52,14 @@ Processed Data:
     1. Columns: "Agency", "SiteNumber", "MeanDischarge", "Month", "Date", "Year"
     2. Column Meanings: Agency (USGS), USGS gage number, mean daily discharge (csf), Month, Date, Year
 
+2. florida_hurricane_1990_processed.csv
+  1. Columns: "Date", Daily_Discharge_clean" 
+  2. Column Meanings: Date of discharge readings, clean daily discharge where missing data has been interpolated
+
 
 ## Scripts and code
 
-None
+#######INSERT LIST OF WRNAGLING AND EXPLAROTY CODE NAMES
 
 ## Quality assurance/quality control
 
