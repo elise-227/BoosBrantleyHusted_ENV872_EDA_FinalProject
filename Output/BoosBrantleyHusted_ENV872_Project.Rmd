@@ -98,7 +98,7 @@ All datasets used in this analysis were downloaded from the USGS website, specif
 
 #Data Wrangling
 
-Downloaded datasets included date/time and discharge (cfs) columns. After the date column was set to be class date, any unnecessary columns were removed. Next, the date column was separated out to filter for years 1990-2021 and to filter for hurricane months (June-October). This dataset was then saved as the processed dataset for each of the research locations. Missing data values were then filled using a linear interpolation and then daily averages of dischrge were created in a new, clean column of daily means. After all fo these steps were taken the data was considered to be wrangled and was then ready for initial visulaizations. 
+Downloaded datasets included date/time and discharge (cfs) columns. After the date column was set to be class date, any unnecessary columns were removed. Next, the date column was separated out to filter for years 1990-2021 and to filter for hurricane months (June-October). This dataset was then saved as the processed dataset for each of the research locations. Missing data values were then filled using a linear interpolation and then daily averages of discharge were created in a new, clean column of daily means. After all fo these steps were taken the data was considered to be wrangled and was then ready for initial visualizations. 
 
 ```{r NY Wrangle, include=FALSE}
 #Wrangle Data
@@ -205,6 +205,8 @@ write.csv(florida_1990_edit, "./Data/Processed/flordia_1990_processed.csv")
 \newpage
 
 # Exploratory Analysis 
+
+The exploratory analysis of this data involved creating a map of the locations of the research gages along the East Coast of the United States was created to orient readers to the locality of the research. Also included n the exploratory analysis is the initial visualizations of discharge data of each of the research locations during hurricane seasons from 1990-2021. After initial graphs showed poorly visualized data a log scale was applied to the y-axis in order to better visualize any trend that may be occurring. Comparing differences between the intensity and frequency, and changes in these variables over time, allowed for the formation of predictions by researchers on possible differences in each research location as well as any changes over time. However, to fully understand these trends and trend changes the analysis that follows was performed. 
 
 ```{r map of locations, fig.cap='Locations of Research Gage Sites'}
 site_locations <- read.csv("./Data/Raw/Site_locations.csv", stringsAsFactors = T)
