@@ -54,6 +54,7 @@ my_theme <- theme_classic(base_size = 14) +
 theme_set(my_theme)
 
 # Load your datasets
+
 #New York Data
 NY_Discharge <- read.csv("./Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactors = TRUE)
 #Format Date
@@ -61,6 +62,8 @@ NY_Discharge$Date <- as.Date(NY_Discharge$Date, format = "%m/%d/%Y")
 
 #North Carolina Data
 NC_Discharge <- read.csv("./Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
+# setting date column as date
+NewRiver.Discharge.RAW$Date <- as.Date(NewRiver.Discharge.RAW$datetime, format = '%m/%d/%y')
 
 #Florida data
 #read in both sheets of the data since data was too big to fit on one
@@ -94,7 +97,10 @@ All datasets used in this analysis were downloaded from the USGS website, specif
 \newpage
 
 #Data Wrangling
-```{r NY Wrangle}
+
+Downloaded datasets included date/time and discharge (cfs) columns. After the date column was set to be class date, any unnecessary columns were removed. Next, the date column was separated out to filter for years 1990-2021 and to filter for hurricane months (June-October). This dataset was then saved as the processed dataset for each of the research locations. Missing data values were then filled using a linear interpolation and then daily averages of dischrge were created in a new, clean column of daily means. After all fo these steps were taken the data was considered to be wrangled and was then ready for initial visulaizations. 
+
+```{r NY Wrangle, include=FALSE}
 #Wrangle Data
 
 # filling missing data with linear interpolation
@@ -122,7 +128,7 @@ write.csv(NY_Discharge.processed, "./Data/Processed/NY_DischargeData_Processed",
 
 ```
 
-```{r NC Wrangle}
+```{r NC Wrangle, include=FALSE}
 # initial tidying of dataset
 NewRiver.Discharge.RAW <- NewRiver.Discharge.RAW[-c(1), ] #removing non-data row
 
@@ -159,7 +165,7 @@ NewRiver.Daily.Discharge.Clean <-
   mutate(Discharge_cfs_Clean = zoo::na.approx(MeanDailyDischarge_cfs))
 ```
 
-```{r FL Wrangle}
+```{r FL Wrangle, include=FALSE}
 #clean the original florida dataset
 florida_clean <- join %>%
   mutate(Date = ymd(Date)) %>%
