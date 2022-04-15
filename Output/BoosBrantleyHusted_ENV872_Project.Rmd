@@ -430,7 +430,7 @@ plot(combined_NonSeasonal.Plot)
 
 # Summary and Conclusions
 
-There appears to be a poleward trend in hurricanes based on the trend in discharge values during hurricane months across the east coast. 
+There appears to be a poleward trend in hurricanes based on the trend in discharge values during hurricane months across the east coast. Hurricane discharge trends are increasing in New York and North Carolina while the last 30 years yielded a slightly decreasing trend in Florida. This poleward trend, with increasing hurricane frequency and intensity in states farther north could lead to exacerbated natural disasters. Large urban centers such as New York City are not equipped to handle such rain events, especially with the amount of impervious surface cover, which could lead to more disastrous flooding events. Future research on this topic could include more sites along the East Coast to get a better idea of the trend that may be occurring in terms of where hurricanes are becoming more/less frequent and intense. 
 
 State           | Tau value     | P-value
 --------------- | ------------- | ------------
