@@ -8,8 +8,8 @@ library(Kendall)
 library(tseries)
 
 #load data
-florida_part2 <- read.csv("./Data/Raw/florida_round2.csv", stringsAsFactors = T)
-florida_part2_join <- read.csv("./Data/Raw/florida_round2_1.csv", stringsAsFactors = T)
+florida_part2 <- read.csv("./Data/Raw/FloridaNorthProng_Discharge_1.csv", stringsAsFactors = T)
+florida_part2_join <- read.csv("./Data/Raw/FloridaNorthProng_Discharge_2.csv", stringsAsFactors = T)
 #join the two datasets
 join <- rbind(florida_part2, florida_part2_join)
 
