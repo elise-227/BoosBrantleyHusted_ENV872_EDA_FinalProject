@@ -31,6 +31,7 @@ colnames(NewRiver.Discharge.PROC) <- c("Agency", "Site_No",
 NewRiver.Discharge.PROC$Discharge_cfs <- as.numeric(NewRiver.Discharge.PROC$Discharge_cfs)
 
 NewRiver.Discharge.PROC <- NewRiver.Discharge.PROC %>% 
+  mutate(Discharge_cfs_Clean = zoo::na.approx(Discharge_cfs)) %>% # linear interpolation
   group_by(Date) %>%  # grouping by date
   mutate(Year = year(Date), # creating year column
          Month = month(Date), # creating month column
@@ -41,16 +42,11 @@ NewRiver.Discharge.PROC <- NewRiver.Discharge.PROC %>%
 # saving processd file as csv
 write.csv(NewRiver.Discharge.PROC, "./Data/Processed/NC_Discharge_NewRiver_PROC.csv", row.names = FALSE)
 
-# filling missing data with linear interpolation
-NewRiver.Discharge.Clean <-
-  NewRiver.Discharge.PROC %>%
-  mutate(Discharge_cfs_Clean = zoo::na.approx(Discharge_cfs))
-
 # setting clean column as numeric
-NewRiver.Discharge.Clean$Discharge_cfs_Clean <- as.numeric(NewRiver.Discharge.Clean$Discharge_cfs_Clean)
+NewRiver.Discharge.PROC$Discharge_cfs_Clean <- as.numeric(NewRiver.Discharge.PROC$Discharge_cfs_Clean)
 
 # creating daily discharge dataset
-NewRiver.Daily.Discharge.Clean <- NewRiver.Discharge.Clean %>% 
+NewRiver.Daily.Discharge.Clean <- NewRiver.Discharge.PROC %>% 
   group_by(Date) %>% 
   dplyr::summarize(MeanDailyDischarge_cfs = 
                      mean(Discharge_cfs_Clean)) %>%  #daily mean discharge

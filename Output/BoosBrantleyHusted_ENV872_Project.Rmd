@@ -131,39 +131,41 @@ write.csv(NY_Discharge.processed, "./Data/Processed/NY_DischargeData_Processed",
 
 ```{r NC Wrangle, include=FALSE}
 # initial tidying of dataset
-NewRiver.Discharge.RAW <- NewRiver.Discharge.RAW[-c(1), ] #removing non-data row
+NewRiver.Discharge.RAW <- NewRiver.Discharge.RAW[-c(1), ] # removing non-data row
 
 NewRiver.Discharge.PROC <- NewRiver.Discharge.RAW %>% 
-                        select(agency_cd, site_no, 
-                               X89345_00060, X89346_00065, Date) #selecting necessary columns
+  select(agency_cd, site_no, 
+         X89345_00060, Date) #selecting necessary columns
 
 colnames(NewRiver.Discharge.PROC) <- c("Agency", "Site_No",
-                            "Discharge_cfs", "GageHeight_ft", "Date") #changing column names
-  
-# setting discharge and gage height columns as numeric
+                                       "Discharge_cfs", "Date") # changing column names
+
+# setting discharge column as numeric
 NewRiver.Discharge.PROC$Discharge_cfs <- as.numeric(NewRiver.Discharge.PROC$Discharge_cfs)
-NewRiver.Discharge.PROC$GageHeight_ft <- as.numeric(NewRiver.Discharge.PROC$GageHeight_ft)
 
 NewRiver.Discharge.PROC <- NewRiver.Discharge.PROC %>% 
-                        group_by(Date) %>%  #grouping by date
-                        mutate(Year = year(Date), #creating year column
-                               Month = month(Date), #creating month column
-                               Day = day(Date)) %>% #creating day column
-                        filter(Year >= 1990) %>% #filtering for data 1990 or later
-                      filter(Month > 5 & Month < 11) #filtering for data in hurricane season
+  mutate(Discharge_cfs_Clean = zoo::na.approx(Discharge_cfs)) %>% # linear interpolation
+  group_by(Date) %>%  # grouping by date
+  mutate(Year = year(Date), # creating year column
+         Month = month(Date), # creating month column
+         Day = day(Date)) %>% # creating day column
+  filter(Year >= 1990) %>% # filtering for data 1990 or later
+  filter(Month > 5 & Month < 11) # filtering for data in hurricane season
 
 # saving processd file as csv
 write.csv(NewRiver.Discharge.PROC, "./Data/Processed/NC_Discharge_NewRiver_PROC.csv", row.names = FALSE)
-                        
-# creating daily discharge dataset
-NewRiver.Daily.DischargeGage <- NewRiver.Discharge.PROC %>%  
-            summarise(MeanDailyDischarge_cfs = mean(Discharge_cfs), #daily mean discharge
-                      MeanDailyGageHeight_ft = mean(GageHeight_ft)) #daily mean gage height
 
-# filling missing data with linear interpolation
-NewRiver.Daily.Discharge.Clean <-
-  NewRiver.Daily.DischargeGage %>%
-  mutate(Discharge_cfs_Clean = zoo::na.approx(MeanDailyDischarge_cfs))
+# setting clean column as numeric
+NewRiver.Discharge.PROC$Discharge_cfs_Clean <- as.numeric(NewRiver.Discharge.PROC$Discharge_cfs_Clean)
+
+# creating daily discharge dataset
+NewRiver.Daily.Discharge.Clean <- NewRiver.Discharge.PROC %>% 
+  group_by(Date) %>% 
+  dplyr::summarize(MeanDailyDischarge_cfs = 
+                     mean(Discharge_cfs_Clean)) %>%  #daily mean discharge
+  mutate(Year = year(Date), # creating year column
+         Month = month(Date), # creating month column
+         Day = day(Date)) # creating day column
 ```
 
 
@@ -172,6 +174,8 @@ NewRiver.Daily.Discharge.Clean <-
 # Exploratory Analysis 
 
 The exploratory analysis of the data involved creating a map of the USGS gage locations along the East Coast of the U.S. to orient individuals towards the locality of the research. Also, the initial visualizations of the discharge data for each research location-during hurricane seasons-was included in the exploratory analysis from ~1990-2021. After the initial graphs displayed  poorly visualized data, a log scale was applied to the y-axis in order to better present any noticeable trend that may be occurring. Comparing differences between the intensity, frequency, and shifts in these variables over time, permitted researchers to formulate predictions on possible changes in each research location as well as any changes over time. However, to fully understand these shifting trends, the following time series analysis was conducted. 
+
+Below is a map of where each USGS gage site is located along the Atlantic coast of the US.
 
 ```{r map of locations, echo=FALSE, fig.cap='Locations'}
 site_locations <- read.csv("./Data/Raw/Site_locations.csv", stringsAsFactors = T)
@@ -182,6 +186,8 @@ mapview(site_locations.sf[1,], zcol = "Site.Name", col.regions = "deeppink1") +
 mapview(site_locations.sf[2,], zcol = "Site.Name", col.regions = "turquoise4") +
 mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "forestgreen")
 ```
+
+An initial plot of discharge within hurricane months at the Florida location shows a potential decrease in discharge over time. 
 
 ```{r ex an FL, fig.cap='Florida Discharge (cfs) 1990-2021'}
 #plot discharge before running time series on the log scale
@@ -229,6 +235,8 @@ NY_DailyDischargePlot
 The analysis of these datasets centers on creating time series objects of the discharge data. These time series objects are then decomposed to analyze the trend, seasonality, and remainder for the data values. New dataframes were then created with these three aspects of the time series. Within these dataframes, the trend and remainder values for each data point were combined to create a "non-seasonal" discharge value in order to better understand the actual changes in hurricane intensity and frequency during the hurricane season.
 
 These non-seasonal values were then used to create another time series object which was graphed to visualize potential trends that may be occurring in the data as well as the spread of the discharge values. The spread of the discharge values indicates differences in discharge which is a proxy for hurricane intensity. To analyze trends statistically, rather than visually, a Mann Kendall test was performed. The Mann Kendall test produced a tau value which indicated whether the trend was increasing or decreasing. The tau values were compared across all three research locations in addition to p-values which displayed statistical significance of the results. 
+
+## New York Analysis
 
 ```{r NY analysis}
 
@@ -289,6 +297,8 @@ print(NY_NonSeasonal.Plot2)
 
 ```
 
+## North Carolina Analysis
+
 ```{r NC analysis}
 # creating daily discharge time series
 NewRiver.Daily.Discharge.ts <- ts(NewRiver.Daily.Discharge.Clean$Discharge_cfs_Clean,
@@ -330,14 +340,20 @@ NonSeasonal.Plot
 MannKendall(NonSeasonal.DailyDischarge.ts)
 ```
 
-```{r FL analysis}
+## Florida Analysis
+
+```{r FL analysis time series, echo=FALSE, fig.cap= "Decomposed plot of Florida discharge time series"}
 #regular time series
 florida_hurricane_ts <- ts(florida_hurricane_1990$Daily_Discharge_clean, start=c(1990,6), frequency = 153)  
-florida_hurricane_ts
 
 #decomposed time series
 florida_hurricane_Decomposed <- stl(florida_hurricane_ts, s.window = "periodic")
 plot(florida_hurricane_Decomposed)
+```
+
+Above is the decomposed time series of the florida discharge data during hurricane months. 
+
+```{r FL analysis remove seasonal, echo=FALSE, fig.cap= "Nonseasonal data from Florida discharge time series"}
 #filtering out seasonal data
 florida_hurricane_Decomposed_Components <- as.data.frame(florida_hurricane_Decomposed$time.series[,2:3])
 florida_hurricane_Decomposed_Components <- florida_hurricane_Decomposed_Components %>%
@@ -351,7 +367,11 @@ nonseasonal_data_florida_ts <- ts(florida_hurricane_Decomposed_Components$data,
                                 start=c(1990,6),
                                 frequency=153) 
 plot(nonseasonal_data_florida_ts)
+```
 
+Above is a plot of the non seasonal data in the Florida time series which was determined by removing the seasonal data from the time series. 
+
+```{r FL analysis trend and final plot, echo=FALSE, fig.cap="Plot of nonseasonal time series of Florida discharge and overall trend"}
 #look for trend and significance 
 florida_trend <- MannKendall(nonseasonal_data_florida_ts)
 florida_trend
@@ -369,6 +389,10 @@ FL_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, aes(x = D
   theme(axis.text.x = element_text(angle = 90)) 
 plot(FL_NonSeasonal.Plot)                               
 ```
+
+## Comparison between Sites 
+
+Each of the locations non-seasonal time series and trends are visualized and compared in the figure below. 
 
 ```{r combined plot, fig.cap='Non-Seasaonl Discharge Plot for all Gage Sites (cfs)'}
 # creating combined nonseasonal dataframe
