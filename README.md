@@ -42,6 +42,10 @@ Raw Data:
    1. Columns: "Name", "Site", "Date", "Discharge"
    2. Column Meanings: Name of agency (USGS), USGS gage number, Date of collection, mean daily discharge (cfs)
 
+4. Site_locations.csv
+  1. Columns: "State", "Station.No", "Long", "Lat", "Datum","Site.Name","EPSG"
+  2. Column Meanings: State in which gage is located, the USGS station number, longitudnal coordinate, latitudnal coordinate, datum of coordinates, name of the site in which gage is located, coordinate reference system 
+
 Processed Data:
 
 1. NC_Discharge_NewRiver_PROC.csv
@@ -53,13 +57,34 @@ Processed Data:
     2. Column Meanings: Agency (USGS), USGS gage number, mean daily discharge (csf), Month, Date, Year
 
 2. florida_hurricane_1990_processed.csv
-  1. Columns: "Date", Daily_Discharge_clean" 
-  2. Column Meanings: Date of discharge readings, clean daily discharge where missing data has been interpolated
+    1. Columns: "Date", Daily_Discharge_clean" 
+    2. Column Meanings: Date of discharge readings, clean daily discharge where missing data has been interpolated
 
 
 ## Scripts and code
 
-#######INSERT LIST OF WRNAGLING AND EXPLAROTY CODE NAMES
+Wrangling code:
+    1. NY_Wrangling.R
+        - code for wrangling of New York discharge data
+    2. NC_NewRiver_Proc_Wrangle.R
+        - code for wrangling of North Carolina discharge data
+    3. FL_Wrangling.R
+        - code for wrangling of Florida discharge data
+Exploration code:
+    1. NY_Exploration.R
+        - code for visualizing New York discharge data
+    2. NC_NewRiver_Analysis.R
+        - code for visualizing North Carolina discharge data
+    3. Florida_Data_Exploration.R
+        - code for visualizing Florida discharge data
+Analysis code:
+    1. NY_Analysis.R
+        - code for running non-seasonal time series trend analysis on discharge data of hurricane months in New York 
+    2. NC_NewRiver_Analysis.R
+        - code for running non-seasonal time series trend analysis on discharge data of hurricane months in North Carolina
+    3. Florida_Analysis.R
+      - code for running non-seasonal time series trend analysis on discharge data of hurricane months in Florida
+    
 
 ## Quality assurance/quality control
 
