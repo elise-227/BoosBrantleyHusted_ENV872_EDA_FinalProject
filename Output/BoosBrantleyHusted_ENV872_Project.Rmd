@@ -336,7 +336,7 @@ NonSeasonal.Plot
 MannKendall(NonSeasonal.DailyDischarge.ts)
 ```
 
-```{r FL analysis time series, echo=FALSE}
+```{r FL analysis time series, echo=FALSE, fig.cap= "Decomposed plot of Florida discharge time series"}
 #regular time series
 florida_hurricane_ts <- ts(florida_hurricane_1990$Daily_Discharge_clean, start=c(1990,6), frequency = 153)  
 
@@ -347,7 +347,7 @@ plot(florida_hurricane_Decomposed)
 
 Above is the decomposed time series of the florida discharge data during hurricane months. 
 
-```{r FL analysis remove seasonal, echo=FALSE}
+```{r FL analysis remove seasonal, echo=FALSE, fig.cap= "Nonseasonal data from Florida discharge time series"}
 #filtering out seasonal data
 florida_hurricane_Decomposed_Components <- as.data.frame(florida_hurricane_Decomposed$time.series[,2:3])
 florida_hurricane_Decomposed_Components <- florida_hurricane_Decomposed_Components %>%
@@ -365,14 +365,12 @@ plot(nonseasonal_data_florida_ts)
 
 Above is a plot of the non seasonal data in the Florida time series which was determined by removing the seasonal data from the time series. 
 
-```{r FL analysis trend, echo=FALSE}
+```{r FL analysis trend and final plot, echo=FALSE, fig.cap="Plot of nonseasonal time series of Florida discharge and overall trend"}
 #look for trend and significance 
 florida_trend <- MannKendall(nonseasonal_data_florida_ts)
 florida_trend
 summary(florida_trend)
-```
 
-```{r FL analysis final plot, echo=FALSE}
 #plot of nonseasonal trend
 FL_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, aes(x = Date, y = data)) +
   scale_y_log10() +
