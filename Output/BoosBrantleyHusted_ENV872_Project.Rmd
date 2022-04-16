@@ -175,6 +175,8 @@ NewRiver.Daily.Discharge.Clean <- NewRiver.Discharge.PROC %>%
 
 The exploratory analysis of the data involved creating a map of the USGS gage locations along the East Coast of the U.S. to orient individuals towards the locality of the research. Also, the initial visualizations of the discharge data for each research location-during hurricane seasons-was included in the exploratory analysis from ~1990-2021. After the initial graphs displayed  poorly visualized data, a log scale was applied to the y-axis in order to better present any noticeable trend that may be occurring. Comparing differences between the intensity, frequency, and shifts in these variables over time, permitted researchers to formulate predictions on possible changes in each research location as well as any changes over time. However, to fully understand these shifting trends, the following time series analysis was conducted. 
 
+Below is a map of where each USGS gage site is located along the Atlantic coast of the US.
+
 ```{r map of locations, echo=FALSE, fig.cap='Locations'}
 site_locations <- read.csv("./Data/Raw/Site_locations.csv", stringsAsFactors = T)
 site_locations.sf <- site_locations %>%
@@ -184,6 +186,8 @@ mapview(site_locations.sf[1,], zcol = "Site.Name", col.regions = "deeppink1") +
 mapview(site_locations.sf[2,], zcol = "Site.Name", col.regions = "turquoise4") +
 mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "forestgreen")
 ```
+
+An initial plot of discharge within hurricane months at the Florida location shows a potenital decrease in discharge over time. 
 
 ```{r ex an FL, fig.cap='Florida Discharge (cfs) 1990-2021'}
 #plot discharge before running time series on the log scale
@@ -332,14 +336,18 @@ NonSeasonal.Plot
 MannKendall(NonSeasonal.DailyDischarge.ts)
 ```
 
-```{r FL analysis}
+```{r FL analysis time series, echo=FALSE}
 #regular time series
 florida_hurricane_ts <- ts(florida_hurricane_1990$Daily_Discharge_clean, start=c(1990,6), frequency = 153)  
-florida_hurricane_ts
 
 #decomposed time series
 florida_hurricane_Decomposed <- stl(florida_hurricane_ts, s.window = "periodic")
 plot(florida_hurricane_Decomposed)
+```
+
+Above is the decomposed time series of the florida discharge data during hurricane months. 
+
+```{r FL analysis remove seasonal, echo=FALSE}
 #filtering out seasonal data
 florida_hurricane_Decomposed_Components <- as.data.frame(florida_hurricane_Decomposed$time.series[,2:3])
 florida_hurricane_Decomposed_Components <- florida_hurricane_Decomposed_Components %>%
@@ -353,12 +361,18 @@ nonseasonal_data_florida_ts <- ts(florida_hurricane_Decomposed_Components$data,
                                 start=c(1990,6),
                                 frequency=153) 
 plot(nonseasonal_data_florida_ts)
+```
 
+Above is a plot of the non seasonal data in the Florida time series which was determined by removing the seasonal data from the time series. 
+
+```{r FL analysis trend, echo=FALSE}
 #look for trend and significance 
 florida_trend <- MannKendall(nonseasonal_data_florida_ts)
 florida_trend
 summary(florida_trend)
+```
 
+```{r FL analysis final plot, echo=FALSE}
 #plot of nonseasonal trend
 FL_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, aes(x = Date, y = data)) +
   scale_y_log10() +
@@ -371,6 +385,7 @@ FL_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, aes(x = D
   theme(axis.text.x = element_text(angle = 90)) 
 plot(FL_NonSeasonal.Plot)                               
 ```
+
 
 ```{r combined plot, fig.cap='Non-Seasaonl Discharge Plot for all Gage Sites (cfs)'}
 # creating combined nonseasonal dataframe
