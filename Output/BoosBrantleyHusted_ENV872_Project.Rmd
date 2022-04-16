@@ -187,7 +187,7 @@ mapview(site_locations.sf[2,], zcol = "Site.Name", col.regions = "turquoise4") +
 mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "forestgreen")
 ```
 
-An initial plot of discharge within hurricane months at the Florida location shows a potenital decrease in discharge over time. 
+An initial plot of discharge within hurricane months at the Florida location shows a potential decrease in discharge over time. 
 
 ```{r ex an FL, fig.cap='Florida Discharge (cfs) 1990-2021'}
 #plot discharge before running time series on the log scale
