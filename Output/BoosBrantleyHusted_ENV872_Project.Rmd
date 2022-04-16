@@ -236,6 +236,8 @@ The analysis of these datasets centers on creating time series objects of the di
 
 These non-seasonal values were then used to create another time series object which was graphed to visualize potential trends that may be occurring in the data as well as the spread of the discharge values. The spread of the discharge values indicates differences in discharge which is a proxy for hurricane intensity. To analyze trends statistically, rather than visually, a Mann Kendall test was performed. The Mann Kendall test produced a tau value which indicated whether the trend was increasing or decreasing. The tau values were compared across all three research locations in addition to p-values which displayed statistical significance of the results. 
 
+## New York Analysis
+
 ```{r NY analysis}
 
 #NY Daily Discharge time-series
@@ -295,6 +297,8 @@ print(NY_NonSeasonal.Plot2)
 
 ```
 
+## North Carolina Analysis
+
 ```{r NC analysis}
 # creating daily discharge time series
 NewRiver.Daily.Discharge.ts <- ts(NewRiver.Daily.Discharge.Clean$Discharge_cfs_Clean,
@@ -335,6 +339,8 @@ NonSeasonal.Plot
 # running Mann Kendall on time series with seasonality removed
 MannKendall(NonSeasonal.DailyDischarge.ts)
 ```
+
+## Florida Analysis
 
 ```{r FL analysis time series, echo=FALSE, fig.cap= "Decomposed plot of Florida discharge time series"}
 #regular time series
@@ -383,6 +389,8 @@ FL_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, aes(x = D
   theme(axis.text.x = element_text(angle = 90)) 
 plot(FL_NonSeasonal.Plot)                               
 ```
+
+## Comparison between Sites 
 
 Each of the locations non-seasonal time series and trends are visualized and compared in the figure below. 
 
