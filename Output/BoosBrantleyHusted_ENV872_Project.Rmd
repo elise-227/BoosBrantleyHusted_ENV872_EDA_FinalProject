@@ -114,7 +114,7 @@ view(NY_Daily.Discharge.Clean)
 #Wrangle Data
 NY_Discharge.processed <-
   NY_Daily.Discharge.Clean %>%
-  rename(Agency = agency_,
+  dplyr::rename(Agency = agency_,
          SiteNumber = cd.......site_no,
          MeanDischarge = MeanDischargeClean) %>%
   select(Agency, SiteNumber, MeanDischarge, Month, Date, Year) %>%
@@ -238,7 +238,7 @@ These non-seasonal values were then used to create another time series object wh
 
 ## New York Analysis
 
-```{r NY analysis}
+```{r NY time series analysis, echo=FALSE, fig.cap=}
 
 #NY Daily Discharge time-series
 NY_DailyDischarge.ts <- ts(NY_Discharge.processed$MeanDischarge, start = c(1990,01), frequency = 153)
