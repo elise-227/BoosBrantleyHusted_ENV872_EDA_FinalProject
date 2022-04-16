@@ -171,7 +171,7 @@ These non-seasonal values were then used to create another time series object wh
 
 ## New York Analysis
 
-```{r NY time series analysis, echo=FALSE, fig.cap=}
+```{r, NY time series analysis, echo=FALSE, fig.cap= "Decomposed Components of the New York Discharge Time Series"}
 
 #NY Daily Discharge time-series
 NY_DailyDischarge.ts <- ts(NY_Discharge.processed$MeanDischarge, start = c(1990,01), frequency = 153)
@@ -205,6 +205,12 @@ NY_Trend.Nonseasonal
 #the null hypothesis of the test (i.e., Seasonal Mann Kendall) states that the data is stationary
 #reject null hypothesis and we state that there is a trend
 
+```
+
+Above is the decomposed time series of the New York discharge data during hurricane months. 
+
+
+```{r NY time series analysis, echo=FALSE, fig.cap= "Nonseasonal Data from the New York Discharge Time Series"}
 #trying to create a plot for the ts but not working! (I'll try ggplot instead below as well)
 #autoplot version
 NY_NonSeasonal.Plot1 <- autoplot(NY_Nonseasonal.ts) +
@@ -229,6 +235,9 @@ NY_NonSeasonal.Plot2 <- ggplot(NY_Combine_Nonseasonal, aes(x = Date, y = Nonseas
 print(NY_NonSeasonal.Plot2)
 
 ```
+
+The plot above displays the non-seasonal data in the New York time series which was produced by removing the seasonal component from the time series. 
+
 
 ## North Carolina Analysis
 
