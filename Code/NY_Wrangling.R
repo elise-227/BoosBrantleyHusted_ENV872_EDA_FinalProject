@@ -5,6 +5,7 @@ getwd()
 library(tidyverse)
 library(lubridate)
 library(zoo)
+library(dplyr)
 library(trend)
 library(dygraphs)
 library(xts)
@@ -25,7 +26,7 @@ view(NY_Daily.Discharge.Clean)
 #Wrangle Data
 NY_Discharge.processed <-
   NY_Daily.Discharge.Clean %>%
-  rename(Agency = agency_,
+  dplyr::rename(Agency = agency_,
          SiteNumber = cd.......site_no,
          MeanDischarge = MeanDischargeClean) %>%
   select(Agency, SiteNumber, MeanDischarge, Month, Date, Year) %>%
