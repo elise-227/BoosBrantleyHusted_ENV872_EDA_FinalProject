@@ -386,6 +386,7 @@ FL_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, aes(x = D
 plot(FL_NonSeasonal.Plot)                               
 ```
 
+Each of the locations non-seasonal time series and trends are visualized and compared in the figure below. 
 
 ```{r combined plot, fig.cap='Non-Seasaonl Discharge Plot for all Gage Sites (cfs)'}
 # creating combined nonseasonal dataframe
