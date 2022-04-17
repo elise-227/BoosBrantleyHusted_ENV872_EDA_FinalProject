@@ -41,8 +41,6 @@ editor_options:
   - Figure 8. Decomposed Components of Florida Time Series
   - Figure 9. Florida Non-Seasonal Daily Discharge During Hurricane Season
   - Figure 10. Comparison Between Three Sites: Non-Seasonal Daily Discharge During Hurricane Season
-  
-\listoffigures 
 
 \newpage
 
