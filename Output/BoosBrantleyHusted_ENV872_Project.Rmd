@@ -116,7 +116,7 @@ Discharge data in Florida, North Carolina, and New York will be used to gain a b
 
 # Dataset Information
 
-All datasets used in this analysis were downloaded from the United States Geological Survey (USGS) website, specifically from  historical records of discharge data recorded by field dataloggers. The data was obtained from three states varying in latitude along the East Coast (i.e., Florida, North Carolina, and New York). Stream gage locations were selected based on proximity to major river basins and vulnerable counties susceptible to hurricane impacts. Additionally, gage locations were specifically chosen with sufficient data, going back to at least the 1990s. Similar timeline ranges for the datatsets ensures a time series analysis that is comparable among all three sites. Discharge data was the data type used in this analysis with all datasets having at minimum daily recordings but some having recordings as often as every 30 minutes. 
+All datasets used in this analysis were downloaded from the United States Geological Survey (USGS) website, specifically from  historical records of discharge data recorded by field dataloggers. The data was obtained from three states varying in latitude along the East Coast (i.e., Florida, North Carolina, and New York). Stream gage locations were selected based on proximity to major river basins and vulnerable counties susceptible to hurricane impacts. Additionally, gage locations were specifically chosen with sufficient data, going back to at least the 1990s. Similar timeline ranges for the datatsets ensures a time series analysis that is comparable among all three sites. Discharge data was the data type used in this analysis with all datasets having at minimum daily recordings but some having recordings as often as every 30 minutes. The basic data structure is outlined below (Table 1).
 
 
 
@@ -155,7 +155,7 @@ mapview(site_locations.sf[2,], zcol = "Site.Name", col.regions = "turquoise4") +
 mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "forestgreen")
 ```
 
-An initial plot of discharge within hurricane months at the Florida location shows a potential decrease in discharge over time. 
+An initial plot of discharge within hurricane months at the Florida location shows a potential decrease in discharge over time (Fig. 1). 
 
 ```{r ex an FL, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center',fig.cap='Figure 1. Florida Discharge (cfs) 1990-2021'}
 #plot discharge before running time series on the log scale
@@ -167,6 +167,7 @@ ggplot(florida_hurricane_1990, aes(x = Date, y = log(Daily_Discharge_clean)))+
        subtitle = "North Prong St. Sebastian River, Florida") 
 ```
 
+The following plot for the North Carolina daily discharge dataset displays a potential increasing trend over time (Fig. 2).
 
 ```{r ex an NC, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Figure 2. North Carolina Discharge (cfs) 1990-2021'}
 # initial data visualiation
@@ -183,7 +184,7 @@ DailyDischarge.Plot <-
 DailyDischarge.Plot
 ```
 
-The following plot for the New York daily discharge dataset displays a potential increasing trend over time.
+The following plot for the New York daily discharge dataset displays a potential increasing trend over time (Fig. 3).
 
 ```{r ex NY, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Figure 3. New York Discharge (cfs) 1990-2021'}
 NY_DailyDischargePlot <- ggplot(NY_Discharge.processed, aes(x = Date, y = MeanDischarge)) +
@@ -209,7 +210,7 @@ These non-seasonal values were then used to create another time series object wh
 
 ### New York Analysis
 
-The following plot displays the decomposed daily discharge components of the time series run on the New York dataset during hurricane season.
+The following plot displays the decomposed daily discharge components of the time series run on the New York dataset during hurricane season (Fig. 4).
 
 ```{r, NY time series analysis, warning=FALSE, echo=FALSE, fig.align='center', fig.cap= "Figure 4. Decomposed Components of the New York Discharge Time Series"}
 
@@ -249,7 +250,7 @@ NY_Trend.Nonseasonal
 The Mann Kendall analysis performed on the New York non-seasonal time series produced a tau value of 0.13 with a p-value of less than 0.05. As a result, the data displays a significant, increasing trend for New York.
 
 
-The plot below displays the non-seasonal daily discharge data in the New York time series which was produced by removing the seasonal component from the time series. 
+The plot below displays the non-seasonal daily discharge data in the New York time series which was produced by removing the seasonal component from the time series (Fig. 5). 
 
 ```{r NY time series analysis continued, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap= "Figure 5. Nonseasonal Data from the New York Discharge Time Series"}
 
@@ -302,7 +303,7 @@ NonSeasonalDischarge.Daily <- NonSeasonalDischarge.Daily %>%
 MannKendall(NonSeasonal.DailyDischarge.ts)
 ```
 
-Above is the decomposed time series of the North Carolina discharge data during hurricane months. The Mann Kendall Test yielded a tau value of 0.0572 and a 2-sided p value of =< 2.22e-16.
+Above is the decomposed time series of the North Carolina discharge data during hurricane months (Fig. 6). The Mann Kendall Test yielded a tau value of 0.0572 and a 2-sided p value of =< 2.22e-16.
 
 ```{r NC time series analysis cont, warning=FALSE, message=FALSE, fig.align='center', echo=FALSE, fig.cap= "Figure 7. Nonseasonal Data from the North Carolina Discharge Time Series"}
 # creating nonseasonal plot
@@ -318,11 +319,11 @@ NonSeasonal.Plot <- ggplot(NonSeasonalDischarge.Daily, aes(Date, Seasonality_Rem
 NonSeasonal.Plot
 ```
 
-The plot above displays the non-seasonal data in the North Carolina time series which was produced by removing the seasonal component from the time series. 
+The plot above displays the non-seasonal data in the North Carolina time series which was produced by removing the seasonal component from the time series (Fig. 7). 
 
 ### Florida Analysis
 
-Seen below is the decomposed time series of the Florida discharge data during hurricane months. 
+Seen below is the decomposed time series of the Florida discharge data during hurricane months (Fig. 8). 
 
 ```{r FL analysis time series, echo=FALSE, warning=FALSE, fig.align='center', fig.cap= "Figure 8. Decomposed plot of Florida discharge time series"}
 #regular time series
@@ -352,7 +353,7 @@ florida_trend <- MannKendall(nonseasonal_data_florida_ts)
 florida_trend
 ```
 
-From running a MannKendall nonseasonal trend analysis on the Florida discharge data set there is a significant overall decline in discharge over time with a tau value of -0.0516 (p = 7.7953e-08). Below this trend is visualized in a plot of the non-seasonal time series of Florida discharge with the significant decreasing trend shown with the black line. 
+From running a MannKendall nonseasonal trend analysis on the Florida discharge data set there is a significant overall decline in discharge over time with a tau value of -0.0516 (p = 7.7953e-08). Below this trend is visualized in a plot of the non-seasonal time series of Florida discharge with the significant decreasing trend shown with the black line (Fig. 9). 
 
 ```{r FL analysis final plot, warning=FALSE, message=FALSE, echo=FALSE, fig.align='center',fig.cap="Figure 9. Plot of nonseasonal time series of Florida discharge and overall trend"}
 #plot of nonseasonal trend
@@ -370,7 +371,7 @@ plot(FL_NonSeasonal.Plot)
 
 ### Comparison between Sites 
 
-Each of the locations non-seasonal time series and trends are visualized and compared in the figure below. The color patterns are the same as above with Florida in pink, North Carolina in green, and New York in turquoise.  
+Each of the locations non-seasonal time series and trends are visualized and compared in the figure below (Fig. 10). The color patterns are the same as above with Florida in pink, North Carolina in green, and New York in turquoise.  
 
 ```{r combined plot, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Figure 10. Non-Seasaonl Discharge Plot for all Gage Sites (cfs)'}
 combined_NonSeasonal.Plot <- ggplot(NULL) +
@@ -400,7 +401,7 @@ From this visual we can see that New York and North Carolina are seeing upward t
 
 # Summary and Conclusions
 
-A poleward hurricane trend is apparent based on the daily discharge values associated with hurricane months across the East Coast of the U.S.. Although discharge is noticeably greater in Florida and North Carolina, hurricane discharge trends are increasing in New York and North Carolina while the last 30 years yielded a slightly decreasing trend in Florida. The effect of poleward hurricane movement with increasing hurricane frequency/intensity could potentially lead to exacerbated natural disasters in northern states of the U.S. Large urban centers such as New York City are not equipped to handle such severe rain events. Given the substantial amount of impervious surface cover attributed to urbanization, future disastrous flooding events are inevitable (Coch 2015). Further research on the analysis could possibly include more sites along the East Coast to better comprehend the trends that may be occurring in terms of where hurricanes are becoming more/less frequent and intense. 
+A poleward hurricane trend is apparent based on the daily discharge values associated with hurricane months across the East Coast of the U.S. Although discharge is noticeably greater in Florida and North Carolina, hurricane discharge trends are increasing in New York and North Carolina while the last 30 years yielded a slightly decreasing trend in Florida (Table 2). The effect of poleward hurricane movement with increasing hurricane frequency/intensity could potentially lead to exacerbated natural disasters in northern states of the U.S. Large urban centers such as New York City are not equipped to handle such severe rain events. Given the substantial amount of impervious surface cover attributed to urbanization, future disastrous flooding events are inevitable (Coch 2015). Further research on the analysis could possibly include more sites along the East Coast to better comprehend the trends that may be occurring in terms of where hurricanes are becoming more/less frequent and intense. 
 
 State           | Tau value     | P-value
 --------------- | ------------- | ------------
