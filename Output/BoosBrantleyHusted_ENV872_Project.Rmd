@@ -367,7 +367,7 @@ New York        | 0.13          | =< 2.22e-16
 North Carolina  | 0.0572        | =< 2.22e-16
 Florida         | -0.0516       |  7.7953e-08
 
-
+Table 1. List of tau values and p-values from non-seasonal time series analyses. 
 
 \newpage
 
