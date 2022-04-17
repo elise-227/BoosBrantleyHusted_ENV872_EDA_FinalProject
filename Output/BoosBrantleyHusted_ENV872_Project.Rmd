@@ -270,7 +270,7 @@ NonSeasonalDischarge.Daily <- NonSeasonalDischarge.Daily %>%
 MannKendall(NonSeasonal.DailyDischarge.ts)
 ```
 
-Above is the decomposed time series of the New York discharge data during hurricane months. 
+Above is the decomposed time series of the North Carolina discharge data during hurricane months. The Mann Kendall Test yielded a tau value of 0.0572 and a 2-sided p value of =< 2.22e-16.
 
 ```{r NC time series analysis, echo=FALSE, fig.cap= "Nonseasonal Data from the North Carolina Discharge Time Series"}
 # creating nonseasonal plot
@@ -286,7 +286,7 @@ NonSeasonal.Plot <- ggplot(NonSeasonalDischarge.Daily, aes(Date, Seasonality_Rem
 NonSeasonal.Plot
 ```
 
-The plot above displays the non-seasonal data in the New York time series which was produced by removing the seasonal component from the time series. 
+The plot above displays the non-seasonal data in the North Carolina time series which was produced by removing the seasonal component from the time series. 
 
 ## Florida Analysis
 
