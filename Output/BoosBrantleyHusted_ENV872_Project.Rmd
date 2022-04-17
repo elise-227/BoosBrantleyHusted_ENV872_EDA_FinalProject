@@ -322,7 +322,7 @@ The plot above displays the non-seasonal data in the North Carolina time series 
 
 ### Florida Analysis
 
-Below is the decomposed time series of the Florida discharge data during hurricane months. 
+Seen below is the decomposed time series of the Florida discharge data during hurricane months. 
 
 ```{r FL analysis time series, echo=FALSE, warning=FALSE, fig.align='center', fig.cap= "Figure 8. Decomposed plot of Florida discharge time series"}
 #regular time series
@@ -352,9 +352,7 @@ florida_trend <- MannKendall(nonseasonal_data_florida_ts)
 florida_trend
 ```
 
-From running a MannKendall nonseasonal trend analysis on the Florida discharge data set there is a significant overall decline in discharge over time with a tau value of -0.0516 (p = 7.7953e-08).  
-
-Below is a plot of the non-seasonal time series of Florida discharge with the significant decreasing trend shown with the black line. 
+From running a MannKendall nonseasonal trend analysis on the Florida discharge data set there is a significant overall decline in discharge over time with a tau value of -0.0516 (p = 7.7953e-08). Below this trend is visualized in a plot of the non-seasonal time series of Florida discharge with the significant decreasing trend shown with the black line. 
 
 ```{r FL analysis final plot, warning=FALSE, message=FALSE, echo=FALSE, fig.align='center',fig.cap="Figure 9. Plot of nonseasonal time series of Florida discharge and overall trend"}
 #plot of nonseasonal trend
@@ -372,7 +370,7 @@ plot(FL_NonSeasonal.Plot)
 
 ### Comparison between Sites 
 
-Each of the locations non-seasonal time series and trends are visualized and compared in the figure below. 
+Each of the locations non-seasonal time series and trends are visualized and compared in the figure below. The color patterns are the same as above with Florida in pink, North Carolina in green, and New York in turquoise.  
 
 ```{r combined plot, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Figure 10. Non-Seasaonl Discharge Plot for all Gage Sites (cfs)'}
 combined_NonSeasonal.Plot <- ggplot(NULL) +
@@ -396,6 +394,7 @@ combined_NonSeasonal.Plot <- ggplot(NULL) +
 plot(combined_NonSeasonal.Plot)
 ```
 
+From this visual we can see that New York and North Carolina are seeing upward trends while Florida is seeing a downward trend in discharge. Also the overall discharge in New York is less than that of Florida and North Carolina. 
 
 \newpage
 
