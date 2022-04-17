@@ -64,13 +64,16 @@ write.csv(NewRiver.Discharge.PROC, "./Data/Processed/NC_Discharge_NewRiver_PROC.
 NewRiver.Discharge.PROC$Discharge_cfs_Clean <- as.numeric(NewRiver.Discharge.PROC$Discharge_cfs_Clean)
 
 # creating daily discharge dataset
-NewRiver.Daily.Discharge.Clean <- NewRiver.Discharge.PROC %>% 
+NewRiver.Discharge.PROC <- NewRiver.Discharge.PROC %>% 
   group_by(Date) %>% 
   dplyr::summarize(MeanDailyDischarge_cfs = 
                      mean(Discharge_cfs_Clean)) %>%  #daily mean discharge
   mutate(Year = year(Date), # creating year column
          Month = month(Date), # creating month column
          Day = day(Date)) # creating day column
+
+# saving processd file as csv
+write.csv(NewRiver.Discharge.PROC, "./Data/Processed/NC_Discharge_NewRiver_PROC.csv", row.names = FALSE)
 
 ```
 

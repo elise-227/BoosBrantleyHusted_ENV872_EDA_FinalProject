@@ -63,9 +63,9 @@ NY_Discharge <- read.csv("./Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactor
 NY_Discharge$Date <- as.Date(NY_Discharge$Date, format = "%m/%d/%Y")
 
 #North Carolina Data
-NewRiver.Discharge.RAW <- read.csv("./Data/Raw/NC_Discharge_NewRiver_RAW.csv", stringsAsFactors = TRUE)
+NewRiver.Discharge.PROC <- read.csv("./Data/Processed/NC_Discharge_NewRiver_PROC.csv", stringsAsFactors = TRUE)
 # setting date column as date
-NewRiver.Discharge.RAW$Date <- as.Date(NewRiver.Discharge.RAW$datetime, format = '%m/%d/%y')
+NewRiver.Discharge.PROC$Date <- as.Date(NewRiver.Discharge.PROC$datetime, format = '%m/%d/%y')
 
 #Florida data
 florida_hurricane_1990 <- read.csv("./Data/Processed/florida_hurricane_1990_processed.csv", 
@@ -135,7 +135,7 @@ ggplot(florida_hurricane_1990, aes(x = Date, y = log(Daily_Discharge_clean)))+
 ```{r ex an NC, fig.cap='North Carolina Discharge (cfs) 1990-2021'}
 # initial data visualiation
 DailyDischarge.Plot <- 
-                ggplot(NewRiver.Daily.DischargeGage, aes(Date, MeanDailyDischarge_cfs)) +
+                ggplot(NewRiver.Discharge.PROC, aes(Date, MeanDailyDischarge_cfs)) +
                       geom_point(color = "forestgreen") +
                       geom_smooth(method = "lm", color = "black") +
                       labs(x = "Date", y = "Mean Daily Discharge (cfs)",
@@ -209,7 +209,6 @@ NY_Trend.Nonseasonal
 
 Above is the decomposed time series of the New York discharge data during hurricane months. 
 
-
 ```{r NY time series analysis, echo=FALSE, fig.cap= "Nonseasonal Data from the New York Discharge Time Series"}
 #trying to create a plot for the ts but not working! (I'll try ggplot instead below as well)
 #autoplot version
@@ -243,7 +242,7 @@ The plot above displays the non-seasonal data in the New York time series which 
 
 ```{r, NC time series analysis, echo=FALSE, fig.cap= "Decomposed Components of the North Carolina Discharge Time Series"}
 # creating daily discharge time series
-NewRiver.Daily.Discharge.ts <- ts(NewRiver.Daily.Discharge.Clean$Discharge_cfs_Clean,
+NewRiver.Daily.Discharge.ts <- ts(NewRiver.Discharge.PROC$MeanDailyDischarge_cfs,
                      start = c(1990, 06, 01), frequency = 153)
 
 # decomposing daily time series
