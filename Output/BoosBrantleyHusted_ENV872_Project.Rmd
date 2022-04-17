@@ -58,17 +58,17 @@ theme_set(my_theme)
 # Load your datasets
 
 #New York Data
-NY_Discharge <- read.csv("./Data/Raw/NY_MeanDailyDischarge.csv", stringsAsFactors = TRUE)
+NY_Discharge.processed <- read.csv("../Data/Processed/NY_DischargeData_Processed.csv", stringsAsFactors = TRUE)
 #Format Date
-NY_Discharge$Date <- as.Date(NY_Discharge$Date, format = "%m/%d/%Y")
+NY_Discharge.processed$Date <- as.Date(NY_Discharge.processed$Date, format = "%Y-%m-%d")
 
 #North Carolina Data
-NewRiver.Discharge.PROC <- read.csv("./Data/Processed/NC_Discharge_NewRiver_PROC.csv", stringsAsFactors = TRUE)
+NewRiver.Discharge.PROC <- read.csv("../Data/Processed/NC_Discharge_NewRiver_PROC.csv", stringsAsFactors = TRUE)
 # setting date column as date
-NewRiver.Discharge.PROC$Date <- as.Date(NewRiver.Discharge.PROC$datetime, format = '%m/%d/%y')
+NewRiver.Discharge.PROC$Date <- as.Date(NewRiver.Discharge.PROC$Date, format = '%Y-%m-%d')
 
 #Florida data
-florida_hurricane_1990 <- read.csv("./Data/Processed/florida_hurricane_1990_processed.csv", 
+florida_hurricane_1990 <- read.csv("../Data/Processed/florida_hurricane_1990_processed.csv", 
                                    stringsAsFactors = T)
 #setting date column as date 
 florida_hurricane_1990$Date <- as.Date(florida_hurricane_1990$Date, format = '%Y-%m-%d')
@@ -81,13 +81,13 @@ Hurricanes are a serious natural disaster that affects millions each year along 
 
 Discharge data in Florida, North Carolina, and New York will be used to gain a better understanding of how hurricane regimes change across the entire span of the coast through time. Furthermore, the comparative study will reveal if hurricanes are shifting poleward. Our central research questions revolve around investigating any increasing trends in discharge during the hurricane season (June-October) and where these increasing trends are more intense. 
 
-## Research Questions
+### Research Questions
 
-## Question 1: Has there been an overall increase in mean daily discharge during the Atlantic hurricane season from 1990 - 2021?
+### Question 1: Has there been an overall increase in mean daily discharge during the Atlantic hurricane season from 1990 - 2021?
 
-## Question 2: Has one portion of the East Coast of the US experienced a disproportionate increase in hurricane activity, and its associated discharge, compared to other portions commonly affected by these hurricanes?
+### Question 2: Has one portion of the East Coast of the US experienced a disproportionate increase in hurricane activity, and its associated discharge, compared to other portions commonly affected by these hurricanes?
 
-## Question 3: Are the general locations of hurricanes shifting towards the poles in the northern and/or southern hemisphere?
+### Question 3: Are the general locations of hurricanes shifting towards the poles in the northern and/or southern hemisphere?
 
 \newpage
 
@@ -97,7 +97,7 @@ All datasets used in this analysis were downloaded from the United States Geolog
 
 \newpage
 
-#Data Wrangling
+# Data Wrangling
 
 Downloaded datasets included date/time and mean discharge (cfs) columns. After the date column was properly classified as a date, unnecessary columns were removed from the data frame. Next, the date column was separated out to filter for years 1990-2021 and to filter for hurricane months (June-October). The dataset was then saved into the processed folder for each of the research locations. Missing data values were then filled using a linear interpolation and then daily averages of discharge were created in a new, clean column of daily means. After all fo these steps were taken the data was considered to be wrangled and was then ready for initial visualizations. 
 
@@ -110,8 +110,8 @@ The exploratory analysis of the data involved creating a map of the USGS gage lo
 
 Below is a map of where each USGS gage site is located along the Atlantic coast of the US.
 
-```{r map of locations, echo=FALSE, fig.cap='Locations'}
-site_locations <- read.csv("./Data/Raw/Site_locations.csv", stringsAsFactors = T)
+```{r map of locations, warning=FALSE,echo=FALSE}
+site_locations <- read.csv("../Data/Raw/Site_locations.csv", stringsAsFactors = T)
 site_locations.sf <- site_locations %>%
 st_as_sf(coords = c('Long','Lat'),
          crs=4269)
@@ -122,7 +122,7 @@ mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "forestgreen")
 
 An initial plot of discharge within hurricane months at the Florida location shows a potential decrease in discharge over time. 
 
-```{r ex an FL, fig.cap='Florida Discharge (cfs) 1990-2021'}
+```{r ex an FL, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center',fig.cap='Figure 1. Florida Discharge (cfs) 1990-2021'}
 #plot discharge before running time series on the log scale
 ggplot(florida_hurricane_1990, aes(x = Date, y = log(Daily_Discharge_clean)))+
   geom_point(color = "deeppink1")+
@@ -132,7 +132,8 @@ ggplot(florida_hurricane_1990, aes(x = Date, y = log(Daily_Discharge_clean)))+
        subtitle = "North Prong St. Sebastian River, Florida") 
 ```
 
-```{r ex an NC, fig.cap='North Carolina Discharge (cfs) 1990-2021'}
+
+```{r ex an NC, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Figure 2. North Carolina Discharge (cfs) 1990-2021'}
 # initial data visualiation
 DailyDischarge.Plot <- 
                 ggplot(NewRiver.Discharge.PROC, aes(Date, MeanDailyDischarge_cfs)) +
@@ -147,7 +148,8 @@ DailyDischarge.Plot <-
 DailyDischarge.Plot
 ```
 
-```{r ex NY, fig.cap='New York Discharge (cfs) 1990-2021'}
+
+```{r ex NY, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Figure 3. New York Discharge (cfs) 1990-2021'}
 NY_DailyDischargePlot <- ggplot(NY_Discharge.processed, aes(x = Date, y = MeanDischarge)) +
   scale_y_log10() +
   geom_point(color = "turquoise4", size = 0.7) +
@@ -169,13 +171,13 @@ The analysis of these datasets centers on creating time series objects of the di
 
 These non-seasonal values were then used to create another time series object which was graphed to visualize potential trends that may be occurring in the data as well as the spread of the discharge values. The spread of the discharge values indicates differences in discharge which is a proxy for hurricane intensity. To analyze trends statistically, rather than visually, a Mann Kendall test was performed. The Mann Kendall test produced a tau value which indicated whether the trend was increasing or decreasing. The tau values were compared across all three research locations in addition to p-values which displayed statistical significance of the results. 
 
-## New York Analysis
+### New York Analysis
 
-```{r, NY time series analysis, echo=FALSE, fig.cap= "Decomposed Components of the New York Discharge Time Series"}
+```{r, NY time series analysis, warning=FALSE, echo=FALSE, fig.align='center', fig.cap= "Figure 4. Decomposed Components of the New York Discharge Time Series"}
 
 #NY Daily Discharge time-series
 NY_DailyDischarge.ts <- ts(NY_Discharge.processed$MeanDischarge, start = c(1990,01), frequency = 153)
-head(NY_DailyDischarge.ts, 10)
+#head(NY_DailyDischarge.ts, 10) #idk if you need this kelsey!
 
 #Decompose
 NY_DailyDischarge.decompose <- stl(NY_DailyDischarge.ts, s.window = "periodic")
@@ -209,7 +211,7 @@ NY_Trend.Nonseasonal
 
 Above is the decomposed time series of the New York discharge data during hurricane months. 
 
-```{r NY time series analysis, echo=FALSE, fig.cap= "Nonseasonal Data from the New York Discharge Time Series"}
+```{r NY time series analysis continued, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap= "Figure 5. Nonseasonal Data from the New York Discharge Time Series"}
 
 #Nonseasonal ggplot  
 
@@ -230,9 +232,9 @@ print(NY_NonSeasonal.Plot2)
 The plot above displays the non-seasonal data in the New York time series which was produced by removing the seasonal component from the time series. 
 
 
-## North Carolina Analysis
+### North Carolina Analysis
 
-```{r, NC time series analysis, echo=FALSE, fig.cap= "Decomposed Components of the North Carolina Discharge Time Series"}
+```{r, NC time series analysis, echo=FALSE, warning=FALSE, fig.align='center', fig.cap= "Figure 6. Decomposed Components of the North Carolina Discharge Time Series"}
 # creating daily discharge time series
 NewRiver.Daily.Discharge.ts <- ts(NewRiver.Discharge.PROC$MeanDailyDischarge_cfs,
                      start = c(1990, 06, 01), frequency = 153)
@@ -255,7 +257,7 @@ NonSeasonal.DailyDischarge.ts <- ts(NonSeasonalDischarge.Daily$Seasonality_Remov
 
 # adding date column to nonseasonal df
 NonSeasonalDischarge.Daily <- NonSeasonalDischarge.Daily %>% 
-                                mutate(Date = NewRiver.Daily.Discharge.Clean$Date)
+                                mutate(Date = NewRiver.Discharge.PROC$Date)
 
 # running Mann Kendall on time series with seasonality removed
 MannKendall(NonSeasonal.DailyDischarge.ts)
@@ -263,7 +265,7 @@ MannKendall(NonSeasonal.DailyDischarge.ts)
 
 Above is the decomposed time series of the North Carolina discharge data during hurricane months. The Mann Kendall Test yielded a tau value of 0.0572 and a 2-sided p value of =< 2.22e-16.
 
-```{r NC time series analysis, echo=FALSE, fig.cap= "Nonseasonal Data from the North Carolina Discharge Time Series"}
+```{r NC time series analysis cont, warning=FALSE, message=FALSE, fig.align='center', echo=FALSE, fig.cap= "Figure 7. Nonseasonal Data from the North Carolina Discharge Time Series"}
 # creating nonseasonal plot
 NonSeasonal.Plot <- ggplot(NonSeasonalDischarge.Daily, aes(Date, Seasonality_Removed)) +
                       geom_point(color = "forestgreen", size = 0.6) +
@@ -279,9 +281,9 @@ NonSeasonal.Plot
 
 The plot above displays the non-seasonal data in the North Carolina time series which was produced by removing the seasonal component from the time series. 
 
-## Florida Analysis
+### Florida Analysis
 
-```{r FL analysis time series, echo=FALSE, fig.cap= "Decomposed plot of Florida discharge time series"}
+```{r FL analysis time series, echo=FALSE, warning=FALSE, fig.align='center', fig.cap= "Figure 8. Decomposed plot of Florida discharge time series"}
 #regular time series
 florida_hurricane_ts <- ts(florida_hurricane_1990$Daily_Discharge_clean, start=c(1990,6), frequency = 153)  
 
@@ -290,9 +292,9 @@ florida_hurricane_Decomposed <- stl(florida_hurricane_ts, s.window = "periodic")
 plot(florida_hurricane_Decomposed)
 ```
 
-Above is the decomposed time series of the florida discharge data during hurricane months. 
+Above is the decomposed time series of the Florida discharge data during hurricane months. 
 
-```{r FL analysis remove seasonal, echo=FALSE, fig.cap= "Nonseasonal data from Florida discharge time series"}
+```{r FL analysis remove seasonal, warning=FALSE, echo=FALSE}
 #filtering out seasonal data
 florida_hurricane_Decomposed_Components <- as.data.frame(florida_hurricane_Decomposed$time.series[,2:3])
 florida_hurricane_Decomposed_Components <- florida_hurricane_Decomposed_Components %>%
@@ -305,17 +307,14 @@ florida_hurricane_Decomposed_Components <- mutate(florida_hurricane_Decomposed_C
 nonseasonal_data_florida_ts <- ts(florida_hurricane_Decomposed_Components$data,
                                 start=c(1990,6),
                                 frequency=153) 
-plot(nonseasonal_data_florida_ts)
-```
-
-Above is a plot of the non seasonal data in the Florida time series which was determined by removing the seasonal data from the time series. 
-
-```{r FL analysis trend and final plot, echo=FALSE, fig.cap="Plot of nonseasonal time series of Florida discharge and overall trend"}
 #look for trend and significance 
 florida_trend <- MannKendall(nonseasonal_data_florida_ts)
 florida_trend
-summary(florida_trend)
+```
 
+From running a MannKendall nonseasonal trend analysis on the Florida discharge data set there is a significant overall decline in discharge over time with a tau value of -0.0516 (p = 7.7953e-08).  
+
+```{r FL analysis final plot, warning=FALSE, message=FALSE, echo=FALSE, fig.align='center',fig.cap="Figure 9. Plot of nonseasonal time series of Florida discharge and overall trend"}
 #plot of nonseasonal trend
 FL_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, aes(x = Date, y = data)) +
   scale_y_log10() +
@@ -329,20 +328,11 @@ FL_NonSeasonal.Plot <- ggplot(florida_hurricane_Decomposed_Components, aes(x = D
 plot(FL_NonSeasonal.Plot)                               
 ```
 
-## Comparison between Sites 
+### Comparison between Sites 
 
 Each of the locations non-seasonal time series and trends are visualized and compared in the figure below. 
 
-```{r combined plot, fig.cap='Non-Seasaonl Discharge Plot for all Gage Sites (cfs)'}
-# creating combined nonseasonal dataframe
-Date.df <- as.data.frame(NY_Combine_Nonseasonal$Date)
-NY.NonSeasonal.df <- as.data.frame(NY_Combine_Nonseasonal$Nonseasonal)
-FL.NonSeasonal.df <- as.data.frame(florida_hurricane_Decomposed_Components$data)
-NC.NonSeasonal.df <- as.data.frame(NonSeasonalDischarge.Daily$Seasonality_Removed)
-
-Combined.Nonseasonal.DF <- merge(Date.df, NY.NonSeasonal.df, FL.NonSeasonal.df, NC.NonSeasonal.df)
-
-
+```{r combined plot, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Figure 10. Non-Seasaonl Discharge Plot for all Gage Sites (cfs)'}
 combined_NonSeasonal.Plot <- ggplot(NULL) +
   scale_y_log10(limits = c(0.25, 1200)) +
   geom_point(data = NonSeasonalDischarge.Daily, aes(Date, Seasonality_Removed), 
