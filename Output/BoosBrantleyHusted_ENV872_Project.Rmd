@@ -4,6 +4,8 @@ author: "Elise Boos, Andrew Brantley, Kelsey Husted"
 output:
   html_document:
     df_print: paged
+    toc: true
+    fig_caption: yes
   pdf_document:
     keep_tex: yes
     fig_caption: yes
@@ -19,9 +21,29 @@ editor_options:
 \newpage
 \tableofcontents 
 \newpage
-\listoftables 
+
+## List of Tables
+- Table 1. Data Structure 
+- Table 2. List of tau and p-values from time series analyses
+
 \newpage
+
+## List of Figures
+- Exploratory Analysis
+  - Figure 1. Florida Mean Daily Discharge During Hurricane Season
+  - Figure 2. North Carolina Mean Daily Discharge During Hurricane Season
+  - Figure 3. New York Mean Daily Discharge During Hurricane Season
+- Analysis
+  - Figure 4. Decomposed Components of New York Time Series
+  - Figure 5. New York Non-Seasonal Daily Discharge During Hurricane Season
+  - Figure 6. Decomposed Components of North Carolina Time Series
+  - Figure 7. North Carolina Non-Seasonal Daily Discharge During Hurricane Season
+  - Figure 8. Decomposed Components of Florida Time Series
+  - Figure 9. Florida Non-Seasonal Daily Discharge During Hurricane Season
+  - Figure 10. Comparison Between Three Sites: Non-Seasonal Daily Discharge During Hurricane Season
+  
 \listoffigures 
+
 \newpage
 
 ```{r setup, include=FALSE}
@@ -51,7 +73,8 @@ my_theme <- theme_classic(base_size = 14) +
   theme(axis.text = element_text(color = "black"), 
         legend.position = "bottom", legend.text=element_text(size=8), 
         legend.title=element_text(size=10), panel.background = element_rect(fill = "gray95"), 
-        panel.grid.major = element_line(size = 0.6, linetype = 'solid', colour = "white"))
+        panel.grid.major = element_line(size = 0.6, linetype = 'solid', colour = "white"),
+        title = element_text(size = 12))
 
 theme_set(my_theme)
 
@@ -81,19 +104,31 @@ Hurricanes are a serious natural disaster that affects millions each year along 
 
 Discharge data in Florida, North Carolina, and New York will be used to gain a better understanding of how hurricane regimes change across the entire span of the coast through time. Furthermore, the comparative study will reveal if hurricanes are shifting poleward. Our central research questions revolve around investigating any increasing trends in discharge during the hurricane season (June-October) and where these increasing trends are more intense. 
 
-### Research Questions
+# Research Questions
 
-### Question 1: Has there been an overall increase in mean daily discharge during the Atlantic hurricane season from 1990 - 2021?
+ **Question 1**: Has there been an overall increase in mean daily discharge during the Atlantic hurricane season from 1990 - 2021?
 
-### Question 2: Has one portion of the East Coast of the US experienced a disproportionate increase in hurricane activity, and its associated discharge, compared to other portions commonly affected by these hurricanes?
+ **Question 2**: Has one portion of the East Coast of the US experienced a disproportionate increase in hurricane activity, and its associated discharge, compared to other portions commonly affected by these hurricanes?
 
-### Question 3: Are the general locations of hurricanes shifting towards the poles in the northern and/or southern hemisphere?
+ **Question 3**: Are the general locations of hurricanes shifting towards the poles in the northern and/or southern hemisphere?
 
 \newpage
 
 # Dataset Information
 
 All datasets used in this analysis were downloaded from the United States Geological Survey (USGS) website, specifically from  historical records of discharge data recorded by field dataloggers. The data was obtained from three states varying in latitude along the East Coast (i.e., Florida, North Carolina, and New York). Stream gage locations were selected based on proximity to major river basins and vulnerable counties susceptible to hurricane impacts. Additionally, gage locations were specifically chosen with sufficient data, going back to at least the 1990s. Similar timeline ranges for the datatsets ensures a time series analysis that is comparable among all three sites. Discharge data was the data type used in this analysis with all datasets having at minimum daily recordings but some having recordings as often as every 30 minutes. 
+
+
+
+Column Name     | Description
+--------------- | ------------
+Agency          |    USGS 
+SiteNumber      |    USGS gage number 
+MeanDischarge   |    Mean daily discharge (cfs)
+Date            |    Date of collection
+Month           |    Month of collection
+
+Table 1. Table summarizing the dataset structure.
 
 \newpage
 
@@ -128,7 +163,7 @@ ggplot(florida_hurricane_1990, aes(x = Date, y = log(Daily_Discharge_clean)))+
   geom_point(color = "deeppink1")+
   geom_smooth(method = lm, color = "black")+
   labs(x = "Date", y = "Mean Daily Discharge (cfs)",
-       title = "Mean Daily Discharge During Hurrcane Seasons (1990-2021)", 
+       title = "Mean Daily Discharge During Hurricane Seasons (1990-2021)", 
        subtitle = "North Prong St. Sebastian River, Florida") 
 ```
 
@@ -140,7 +175,7 @@ DailyDischarge.Plot <-
                       geom_point(color = "forestgreen") +
                       geom_smooth(method = "lm", color = "black") +
                       labs(x = "Date", y = "Mean Daily Discharge (cfs)",
-                        title = "Mean Daily Discharge During Hurrcane Seasons (1990-2021)", 
+                        title = "Mean Daily Discharge During Hurricane Seasons (1990-2021)", 
                            subtitle = "New River, North Carolina") +
                       theme(plot.title=element_text(hjust=0.5)) +
                       theme(plot.subtitle=element_text(hjust=0.5)) +
@@ -367,7 +402,7 @@ New York        | 0.13          | =< 2.22e-16
 North Carolina  | 0.0572        | =< 2.22e-16
 Florida         | -0.0516       |  7.7953e-08
 
-Table 1. List of tau values and p-values from non-seasonal time series analyses. 
+Table 2. List of tau values and p-values from non-seasonal time series analyses. 
 
 \newpage
 
