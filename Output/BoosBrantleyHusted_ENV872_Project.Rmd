@@ -183,6 +183,7 @@ DailyDischarge.Plot <-
 DailyDischarge.Plot
 ```
 
+The following plot for the New York daily discharge dataset displays a potential increasing trend over time.
 
 ```{r ex NY, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Figure 3. New York Discharge (cfs) 1990-2021'}
 NY_DailyDischargePlot <- ggplot(NY_Discharge.processed, aes(x = Date, y = MeanDischarge)) +
@@ -207,6 +208,8 @@ The analysis of these datasets centers on creating time series objects of the di
 These non-seasonal values were then used to create another time series object which was graphed to visualize potential trends that may be occurring in the data as well as the spread of the discharge values. The spread of the discharge values indicates differences in discharge which is a proxy for hurricane intensity. To analyze trends statistically, rather than visually, a Mann Kendall test was performed. The Mann Kendall test produced a tau value which indicated whether the trend was increasing or decreasing. The tau values were compared across all three research locations in addition to p-values which displayed statistical significance of the results. 
 
 ### New York Analysis
+
+The following plot displays the decomposed daily discharge components of the time series run on the New York dataset during hurricane season.
 
 ```{r, NY time series analysis, warning=FALSE, echo=FALSE, fig.align='center', fig.cap= "Figure 4. Decomposed Components of the New York Discharge Time Series"}
 
@@ -243,8 +246,10 @@ NY_Trend.Nonseasonal
 #reject null hypothesis and we state that there is a trend
 
 ```
+The Mann Kendall analysis performed on the New York non-seasonal time series produced a tau value of 0.13 with a p-value of less than 0.05. As a result, the data displays a significant, increasing trend for New York.
 
-Above is the decomposed time series of the New York discharge data during hurricane months. 
+
+The plot below displays the non-seasonal daily discharge data in the New York time series which was produced by removing the seasonal component from the time series. 
 
 ```{r NY time series analysis continued, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap= "Figure 5. Nonseasonal Data from the New York Discharge Time Series"}
 
@@ -264,7 +269,6 @@ print(NY_NonSeasonal.Plot2)
 
 ```
 
-The plot above displays the non-seasonal data in the New York time series which was produced by removing the seasonal component from the time series. 
 
 
 ### North Carolina Analysis
