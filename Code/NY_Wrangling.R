@@ -37,4 +37,4 @@ view(NY_Discharge.processed)
 
 
 #saving processed file as a csv
-write.csv(NY_Discharge.processed, "./Data/Processed/NY_DischargeData_Processed", row.names = FALSE)
+write.csv(NY_Discharge.processed, "./Data/Processed/NY_DischargeData_Processed.csv", row.names = FALSE)
