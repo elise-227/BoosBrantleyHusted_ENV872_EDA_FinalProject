@@ -210,17 +210,9 @@ NY_Trend.Nonseasonal
 Above is the decomposed time series of the New York discharge data during hurricane months. 
 
 ```{r NY time series analysis, echo=FALSE, fig.cap= "Nonseasonal Data from the New York Discharge Time Series"}
-#trying to create a plot for the ts but not working! (I'll try ggplot instead below as well)
-#autoplot version
-NY_NonSeasonal.Plot1 <- autoplot(NY_Nonseasonal.ts) +
-  scale_y_log10() +
-  labs(x = "Date", y = "Non-Seasonal Daily Discharge (cfs)", 
-       title = "Non-Seasonal Mean Daily Discharge During Hurricane Seasons (1990-2021)", 
-       subtitle = "Cold Spring Harbor, New York") +
-  geom_smooth(method = "lm")
-print(NY_NonSeasonal.Plot1)
- 
-#ggplot version (working)
+
+#Nonseasonal ggplot  
+
 NY_NonSeasonal.Plot2 <- ggplot(NY_Combine_Nonseasonal, aes(x = Date, y = Nonseasonal)) +
   scale_y_log10() +
   geom_point(color = "turquoise4", size = 0.6) +
