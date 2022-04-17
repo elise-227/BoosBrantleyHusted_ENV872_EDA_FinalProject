@@ -87,7 +87,7 @@ Discharge data in Florida, North Carolina, and New York will be used to gain a b
 
 ## Question 2: Has one portion of the East Coast of the US experienced a disproportionate increase in hurricane activity, and its associated discharge, compared to other portions commonly affected by these hurricanes?
 
-## Question 3: Are the general locations of hurricanes shifting towards the poles in the northern &/or southern hemisphere?
+## Question 3: Are the general locations of hurricanes shifting towards the poles in the northern and/or southern hemisphere?
 
 \newpage
 
@@ -241,7 +241,7 @@ The plot above displays the non-seasonal data in the New York time series which 
 
 ## North Carolina Analysis
 
-```{r NC analysis}
+```{r, NC time series analysis, echo=FALSE, fig.cap= "Decomposed Components of the North Carolina Discharge Time Series"}
 # creating daily discharge time series
 NewRiver.Daily.Discharge.ts <- ts(NewRiver.Daily.Discharge.Clean$Discharge_cfs_Clean,
                      start = c(1990, 06, 01), frequency = 153)
@@ -253,7 +253,7 @@ plot(Daily.Discharge.decomp)
 # adding components into a dataframe, removing seasonal component
 Daily.Discharge.Components <- as.data.frame(Daily.Discharge.decomp$time.series[,2:3])
 
-# adding trend and remainder for analysis
+# adding trend and remainder into nonseasonal column
 NonSeasonalDischarge.Daily <- mutate(Daily.Discharge.Components,
                                    Seasonality_Removed = Daily.Discharge.Components$trend +
                                      Daily.Discharge.Components$remainder)
@@ -266,6 +266,13 @@ NonSeasonal.DailyDischarge.ts <- ts(NonSeasonalDischarge.Daily$Seasonality_Remov
 NonSeasonalDischarge.Daily <- NonSeasonalDischarge.Daily %>% 
                                 mutate(Date = NewRiver.Daily.Discharge.Clean$Date)
 
+# running Mann Kendall on time series with seasonality removed
+MannKendall(NonSeasonal.DailyDischarge.ts)
+```
+
+Above is the decomposed time series of the New York discharge data during hurricane months. 
+
+```{r NC time series analysis, echo=FALSE, fig.cap= "Nonseasonal Data from the North Carolina Discharge Time Series"}
 # creating nonseasonal plot
 NonSeasonal.Plot <- ggplot(NonSeasonalDischarge.Daily, aes(Date, Seasonality_Removed)) +
                       geom_point(color = "forestgreen", size = 0.6) +
@@ -277,10 +284,9 @@ NonSeasonal.Plot <- ggplot(NonSeasonalDischarge.Daily, aes(Date, Seasonality_Rem
                       scale_x_date(date_labels = "%Y", date_breaks = "2 year") +
                       theme(axis.text.x = element_text(angle = 90)) 
 NonSeasonal.Plot
-
-# running Mann Kendall on time series with seasonality removed
-MannKendall(NonSeasonal.DailyDischarge.ts)
 ```
+
+The plot above displays the non-seasonal data in the New York time series which was produced by removing the seasonal component from the time series. 
 
 ## Florida Analysis
 
