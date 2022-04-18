@@ -2,12 +2,15 @@
 title: "Hurricane Trends Along the East Coast"
 author: "Elise Boos, Andrew Brantley, Kelsey Husted"
 output:
-  bookdown::html_document2:
+  html_document:
+    toc: yes
     df_print: paged
-    toc: true
-    fig_caption: yes
   pdf_document:
     keep_tex: yes
+    fig_caption: yes
+  bookdown::html_document2:
+    df_print: paged
+    toc: yes
     fig_caption: yes
 subtitle: https://github.com/elise-227/BoosBrantleyHusted_ENV872_EDA_FinalProject.git
 geometry: margin=2.54cm
