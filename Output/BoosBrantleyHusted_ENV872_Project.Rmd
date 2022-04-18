@@ -24,6 +24,7 @@ editor_options:
 \tableofcontents 
 \newpage
 
+
 ## List of Tables
 - Table \@ref(tab:table1): Data Structure 
 - Table \@ref(tab:table2): List of tau and p-values from time series analyses
