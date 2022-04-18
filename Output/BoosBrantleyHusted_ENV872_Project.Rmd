@@ -33,7 +33,7 @@ editor_options:
 
 ## List of Figures
 - Exploratory Analysis                                          
-   Figure \ref{fig:plot} Florida Mean Daily Discharge During Hurricane Season                 
+   Figure \@ref(fig:plot) Florida Mean Daily Discharge During Hurricane Season                 
    Figure \@ref(fig:ex-an-NC): North Carolina Mean Daily Discharge During Hurricane Season                   
    Figure \@ref(fig:ex-NY): New York Mean Daily Discharge During Hurricane Season
    
@@ -156,7 +156,7 @@ mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "forestgreen")
 
 Figure fig:ex-an-FL is an initial plot of discharge within hurricane months at the Florida location and shows a potential decrease in discharge over time. 
 
-```{r ex-an-FL, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap = "Florida Discharge (cfs) 1990-2021\\labelfig:plot"}
+```{r ex-an-FL, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap = 'Florida Discharge (cfs) 1990-2021'}
 #plot discharge before running time series on the log scale
 ggplot(florida_hurricane_1990, aes(x = Date, y = log(Daily_Discharge_clean)))+
   geom_point(color = "deeppink1")+
