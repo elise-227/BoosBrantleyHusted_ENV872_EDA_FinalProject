@@ -8,7 +8,7 @@ output:
   html_document:
     toc: yes
     df_print: paged
-  bookdown::html_document2: yes
+  bookdown::html_document2: 
     df_print: paged
     toc: yes
     fig_caption: yes
