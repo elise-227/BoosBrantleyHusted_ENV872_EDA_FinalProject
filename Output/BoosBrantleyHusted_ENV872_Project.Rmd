@@ -372,7 +372,7 @@ plot(FL_NonSeasonal.Plot)
 
 Each of the locations non-seasonal time series and trends are visualized and compared in the figure below (Figure \@ref(fig:combined-plot)). The color patterns are the same as above with Florida in pink, North Carolina in green, and New York in turquoise.  
 
-```{r combined-plot, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Non-Seasaonl Discharge Plot for all Gage Sites (cfs)'}
+```{r combined-plot, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Non-Seasonal Discharge Plot for all Gage Sites (cfs)'}
 combined_NonSeasonal.Plot <- ggplot(NULL) +
   scale_y_log10(limits = c(0.25, 1200)) +
   geom_point(data = NonSeasonalDischarge.Daily, aes(Date, Seasonality_Removed), 
