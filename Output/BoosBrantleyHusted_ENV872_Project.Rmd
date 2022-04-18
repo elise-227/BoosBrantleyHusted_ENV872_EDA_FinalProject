@@ -2,12 +2,12 @@
 title: "Hurricane Trends Along the East Coast"
 author: "Elise Boos, Andrew Brantley, Kelsey Husted"
 output:
-  pdf_document:
-    keep_tex: yes
-    fig_caption: yes
   html_document:
     toc: yes
     df_print: paged
+  pdf_document:
+    keep_tex: yes
+    fig_caption: yes
   bookdown::html_document2: 
     df_print: paged
     toc: yes
@@ -154,7 +154,7 @@ mapview(site_locations.sf[2,], zcol = "Site.Name", col.regions = "turquoise4") +
 mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "forestgreen")
 ```
 
-Figure \@ref(fig:ex-an-FL) is an initial plot of discharge within hurricane months at the Florida location and shows a potential decrease in discharge over time. 
+Figure fig:ex-an-FL is an initial plot of discharge within hurricane months at the Florida location and shows a potential decrease in discharge over time. 
 
 ```{r ex-an-FL, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center',fig.cap='Florida Discharge (cfs) 1990-2021'}
 #plot discharge before running time series on the log scale
@@ -166,7 +166,7 @@ ggplot(florida_hurricane_1990, aes(x = Date, y = log(Daily_Discharge_clean)))+
        subtitle = "North Prong St. Sebastian River, Florida") 
 ```
 
-The following plot (Figure \@ref(fig:ex-an-NC)) for the North Carolina daily discharge dataset displays a potential increasing trend over time.
+The following plot (Figure fig:ex-an-NC) for the North Carolina daily discharge dataset displays a potential increasing trend over time.
 
 ```{r ex-an-NC, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='North Carolina Discharge (cfs) 1990-2021'}
 # initial data visualiation
