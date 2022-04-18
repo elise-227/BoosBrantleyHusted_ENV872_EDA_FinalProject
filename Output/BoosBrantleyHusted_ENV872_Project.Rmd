@@ -2,15 +2,12 @@
 title: "Hurricane Trends Along the East Coast"
 author: "Elise Boos, Andrew Brantley, Kelsey Husted"
 output:
-  html_document:
-    toc: yes
+  bookdown::html_document2:
     df_print: paged
+    toc: true
+    fig_caption: yes
   pdf_document:
     keep_tex: yes
-    fig_caption: yes
-  bookdown::html_document2: 
-    df_print: paged
-    toc: yes
     fig_caption: yes
 subtitle: https://github.com/elise-227/BoosBrantleyHusted_ENV872_EDA_FinalProject.git
 geometry: margin=2.54cm
@@ -25,26 +22,29 @@ editor_options:
 \newpage
 
 
-## List of Tables
-- Table \@ref(tab:table1): Data Structure 
+## List of Tables               
+*Dataset Information*                       
+- Table \@ref(tab:table1): Data Structure   
+
+*Summary and Conclusions*                   
 - Table \@ref(tab:table2): List of tau and p-values from time series analyses
 
 \newpage
 
-## List of Figures
-- Exploratory Analysis                                          
-   Figure \@ref(fig:plot) Florida Mean Daily Discharge During Hurricane Season                 
-   Figure \@ref(fig:ex-an-NC): North Carolina Mean Daily Discharge During Hurricane Season                   
-   Figure \@ref(fig:ex-NY): New York Mean Daily Discharge During Hurricane Season
+## List of Figures                
+*Exploratory Analysis*                                          
+- Figure \@ref(fig:ex-an-FL): Florida Mean Daily Discharge During Hurricane Season                 
+- Figure \@ref(fig:ex-an-NC): North Carolina Mean Daily Discharge During Hurricane Season                   
+- Figure \@ref(fig:ex-NY): New York Mean Daily Discharge During Hurricane Season
    
-- Analysis                       
-   Figure \@ref(fig:NY-time-series-analysis): Decomposed Components of New York Time Series                 
-   Figure \@ref(fig:NY-time-series-analysis-continued): New York Non-Seasonal Daily Discharge During Hurricane Season                    
-   Figure \@ref(fig:NC-time-series-analysis): Decomposed Components of North Carolina Time Series             
-   Figure \@ref(fig:NC-time-series-analysis-cont): North Carolina Non-Seasonal Daily Discharge During Hurricane Season                
-   Figure \@ref(fig:FL-analysis-time-series): Decomposed Components of Florida Time Series                   
-   Figure \@ref(fig:FL-analysis-final-plot): Florida Non-Seasonal Daily Discharge During Hurricane Season       
-   Figure \@ref(fig:combined-plot): Comparison Between Three Sites: Non-Seasonal Daily Discharge During Hurricane Season
+*Analysis*                       
+- Figure \@ref(fig:NY-time-series-analysis): Decomposed Components of New York Time Series                 
+- Figure \@ref(fig:NY-time-series-analysis-continued): New York Non-Seasonal Daily Discharge During Hurricane Season                    
+- Figure \@ref(fig:NC-time-series-analysis): Decomposed Components of North Carolina Time Series             
+- Figure \@ref(fig:NC-time-series-analysis-cont): North Carolina Non-Seasonal Daily Discharge During Hurricane Season                
+- Figure \@ref(fig:FL-analysis-time-series): Decomposed Components of Florida Time Series                   
+- Figure \@ref(fig:FL-analysis-final-plot): Florida Non-Seasonal Daily Discharge During Hurricane Season     
+- Figure \@ref(fig:combined-plot): Comparison Between Three Sites: Non-Seasonal Daily Discharge During Hurricane Season
 
 \newpage
 \listoffigures
@@ -154,7 +154,7 @@ mapview(site_locations.sf[2,], zcol = "Site.Name", col.regions = "turquoise4") +
 mapview(site_locations.sf[3,], zcol = "Site.Name", col.regions = "forestgreen")
 ```
 
-Figure fig:ex-an-FL is an initial plot of discharge within hurricane months at the Florida location and shows a potential decrease in discharge over time. 
+Figure \@ref(fig:ex-an-FL) is an initial plot of discharge within hurricane months at the Florida location and shows a potential decrease in discharge over time. 
 
 ```{r ex-an-FL, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap = 'Florida Discharge (cfs) 1990-2021'}
 #plot discharge before running time series on the log scale
@@ -166,7 +166,7 @@ ggplot(florida_hurricane_1990, aes(x = Date, y = log(Daily_Discharge_clean)))+
        subtitle = "North Prong St. Sebastian River, Florida") 
 ```
 
-The following plot (Figure fig:ex-an-NC) for the North Carolina daily discharge dataset displays a potential increasing trend over time.
+The following plot (Figure \@ref(fig:ex-an-NC)) for the North Carolina daily discharge dataset displays a potential increasing trend over time.
 
 ```{r ex-an-NC, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='North Carolina Discharge (cfs) 1990-2021'}
 # initial data visualiation
@@ -318,11 +318,11 @@ NonSeasonal.Plot <- ggplot(NonSeasonalDischarge.Daily, aes(Date, Seasonality_Rem
 NonSeasonal.Plot
 ```
 
-The plot above displays the non-seasonal data in the North Carolina time series which was produced by removing the seasonal component from the time series (Figure \@ref(fig:NC-time-series-analysis)). 
+The plot above displays the non-seasonal data in the North Carolina time series which was produced by removing the seasonal component from the time series (Figure \@ref(fig:NC-time-series-analysis-cont)). 
 
 ### Florida Analysis
 
-Seen below is the decomposed time series of the Florida discharge data during hurricane months (Figure \@ref(fig:FL-anlaysis-time-series)). 
+Seen below is the decomposed time series of the Florida discharge data during hurricane months (Figure \@ref(fig:FL-analysis-time-series)). 
 
 ```{r FL-analysis-time-series, echo=FALSE, warning=FALSE, fig.align='center', fig.cap= "Decomposed plot of Florida discharge time series"}
 #regular time series
