@@ -162,7 +162,7 @@ ggplot(florida_hurricane_1990, aes(x = Date, y = log(Daily_Discharge_clean)))+
        subtitle = "North Prong St. Sebastian River, Florida") 
 ```
 
-The following plot (Figure \@ref(fig:ex-an-NC)) for the North Carolina daily discharge dataset displays a potential increasing trend over time (Fig. 2).
+The following plot (Figure \@ref(fig:ex-an-NC)) for the North Carolina daily discharge dataset displays a potential increasing trend over time.
 
 ```{r ex-an-NC, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center', fig.cap='North Carolina Discharge (cfs) 1990-2021'}
 # initial data visualiation
